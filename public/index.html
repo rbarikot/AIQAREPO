@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI QA Agent System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="app-header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-icon">🤖</div>
+      <div>
+        <h1>AI QA Agent System</h1>
+        <p>Playwright JS/TS • Live Browser Inspection • Planner → Generator → Healer</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <span id="apiStatus" class="status-badge checking">● Checking...</span>
+      <select id="globalLanguage" class="lang-select" onchange="syncLanguage(this.value)">
+        <option value="typescript">TypeScript</option>
+        <option value="javascript">JavaScript</option>
+      </select>
+    </div>
+  </div>
+</header>
+
+<div class="pipeline-bar">
+  <div class="pipeline-step active" id="pipe-1" onclick="switchTab('planner')">
+    <div class="pipe-num">1</div>
+    <div class="pipe-info"><strong>Planner Agent</strong><span>Inspect + Analyze</span></div>
+    <div class="pipe-arrow">›</div>
+  </div>
+  <div class="pipeline-step" id="pipe-2" onclick="switchTab('generator')">
+    <div class="pipe-num">2</div>
+    <div class="pipe-info"><strong>Generator Agent</strong><span>Generate Playwright Code</span></div>
+    <div class="pipe-arrow">›</div>
+  </div>
+  <div class="pipeline-step" id="pipe-3" onclick="switchTab('healer')">
+    <div class="pipe-num">3</div>
+    <div class="pipe-info"><strong>Healer Agent</strong><span>Fix Broken Tests</span></div>
+  </div>
+</div>
+
+<main class="app-main">
+
+  <!-- ══ PLANNER TAB ══ -->
+  <section id="tab-planner" class="tab-section active">
+    <div class="two-col">
+      <div class="panel input-panel">
+        <div class="panel-header">
+          <div>
+            <h2><span class="agent-badge planner">AGENT 1</span> Planner</h2>
+            <p>Opens a real browser, inspects your page, then creates an accurate test plan.</p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Feature / Requirement <span class="required">*</span></label>
+          <textarea id="plannerFeature" rows="4" placeholder="e.g. User login with email and password. On success redirect to dashboard. On failure show error message."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Target URL <span class="optional">(browser will navigate here)</span></label>
+          <div class="url-row">
+            <input type="url" id="plannerUrl" placeholder="https://your-app.com/login" />
+            <button class="btn-inspect" id="previewBtn" onclick="previewPage()" title="Preview page">👁</button>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group half">
+            <label>Test Type</label>
+            <select id="plannerTestType">
+              <option value="e2e">E2E Test</option>
+              <option value="api">API Test</option>
+              <option value="component">Component Test</option>
+            </select>
+          </div>
+          <div class="form-group half">
+            <label>Browser Mode</label>
+            <select id="plannerHeaded">
+              <option value="false">Headless (invisible)</option>
+              <option value="true">Headed (visible window)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="toggle-row">
+          <label class="toggle-label">
+            <input type="checkbox" id="plannerNegative" checked />
+            <span class="toggle-switch"></span>
+            Negative Cases
+          </label>
+          <label class="toggle-label">
+            <input type="checkbox" id="plannerEdge" checked />
+            <span class="toggle-switch"></span>
+            Edge Cases
+          </label>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-primary" id="plannerRunBtn" onclick="runPlanner()">
+            <span class="btn-icon">▶</span> Run Planner Agent
+          </button>
+          <button class="btn-ghost" onclick="clearPlanner()">Clear</button>
+        </div>
+
+        <div class="agent-log" id="plannerLog">
+          <div class="log-header">🔄 Agent Activity</div>
+          <div class="log-body" id="plannerLogBody"></div>
+        </div>
+      </div>
+
+      <div class="panel output-panel">
+        <div class="panel-header">
+          <h2>📋 Planner Output</h2>
+          <div class="panel-actions" id="plannerActions" style="display:none">
+            <button class="btn-sm" onclick="copyPlan()">📋 Copy JSON</button>
+            <button class="btn-sm btn-accent" onclick="sendToGenerator()">⚡ Send to Generator →</button>
+          </div>
+        </div>
+
+        <!-- Screenshot Panel -->
+        <div id="screenshotPanel" class="screenshot-panel" style="display:none">
+          <div class="screenshot-header">
+            <span class="screenshot-label">📸 Live Browser Screenshot</span>
+            <span id="screenshotMeta" class="screenshot-meta"></span>
+          </div>
+          <img id="screenshotImg" class="screenshot-img" alt="Page screenshot" />
+          <!-- Element badges -->
+          <div id="elementBadges" class="element-badges"></div>
+        </div>
+
+        <div id="plannerOutput">
+          <div class="empty-state">
+            <div class="empty-icon">🧠</div>
+            <p>Enter a feature + URL and run the Planner Agent.<br/>The browser will navigate to your page, inspect all elements, and generate a real test plan.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ GENERATOR TAB ══ -->
+  <section id="tab-generator" class="tab-section">
+    <div class="two-col">
+      <div class="panel input-panel">
+        <div class="panel-header">
+          <div>
+            <h2><span class="agent-badge generator">AGENT 2</span> Generator</h2>
+            <p>Inspects the page (or reuses data from Planner) then generates Page Object Model + spec files.</p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Test Plan JSON <span class="required">*</span></label>
+          <textarea id="generatorPlan" rows="7" placeholder='Paste test plan JSON, or click "Send to Generator" from Planner...'></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group half">
+            <label>Base URL <span class="optional">(re-inspect if different)</span></label>
+            <input type="url" id="generatorBaseUrl" placeholder="https://your-app.com" />
+          </div>
+          <div class="form-group half">
+            <label>Language</label>
+            <select id="generatorLanguage">
+              <option value="typescript">TypeScript</option>
+              <option value="javascript">JavaScript</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Browser Mode</label>
+          <select id="generatorHeaded">
+            <option value="false">Headless (invisible)</option>
+            <option value="true">Headed (visible window)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Custom Instructions <span class="optional">(optional)</span></label>
+          <input type="text" id="generatorInstructions" placeholder="e.g. Use data-testid selectors, add network mocking..." />
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-primary" id="generatorRunBtn" onclick="runGenerator()">
+            <span class="btn-icon">▶</span> Run Generator Agent
+          </button>
+          <button class="btn-ghost" onclick="clearGenerator()">Clear</button>
+        </div>
+
+        <div class="agent-log" id="generatorLog">
+          <div class="log-header">🔄 Agent Activity</div>
+          <div class="log-body" id="generatorLogBody"></div>
+        </div>
+
+        <div class="setup-box" id="setupBox" style="display:none">
+          <div class="setup-title">⚙️ Setup Instructions</div>
+          <div id="setupInstructions" class="setup-content"></div>
+        </div>
+      </div>
+
+      <div class="panel output-panel">
+        <div class="panel-header">
+          <h2>📄 Generated Files</h2>
+          <div class="panel-actions" id="generatorActions" style="display:none">
+            <button class="btn-sm" onclick="downloadAllFiles()">⬇ Download All</button>
+            <button class="btn-sm btn-accent" onclick="sendToHealer()">💊 Send to Healer →</button>
+          </div>
+        </div>
+
+        <!-- Screenshot Panel for Generator -->
+        <div id="genScreenshotPanel" class="screenshot-panel" style="display:none">
+          <div class="screenshot-header">
+            <span class="screenshot-label">📸 Live Browser Screenshot</span>
+            <span id="genScreenshotMeta" class="screenshot-meta"></span>
+          </div>
+          <img id="genScreenshotImg" class="screenshot-img" alt="Page screenshot" />
+          <div id="genElementBadges" class="element-badges"></div>
+        </div>
+
+        <div id="fileTabs" class="file-tabs"></div>
+        <div id="generatorOutput">
+          <div class="empty-state">
+            <div class="empty-icon">⚡</div>
+            <p>The Generator will open a browser, inspect your page, and create a Page Object Model + test spec using only real selectors found on the page.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ HEALER TAB ══ -->
+  <section id="tab-healer" class="tab-section">
+    <div class="two-col">
+      <div class="panel input-panel">
+        <div class="panel-header">
+          <div>
+            <h2><span class="agent-badge healer">AGENT 3</span> Self-Healer</h2>
+            <p>Paste a broken test + error. The agent diagnoses and fixes it.</p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Broken Test Code <span class="required">*</span></label>
+          <textarea id="healerCode" rows="8" placeholder="Paste your failing Playwright test code here..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Error Message / Stack Trace <span class="required">*</span></label>
+          <textarea id="healerError" rows="4" placeholder="Paste the full error from Playwright output..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Page HTML Snapshot <span class="optional">(optional)</span></label>
+          <textarea id="healerHtml" rows="3" placeholder="Paste relevant HTML snippet for better selector suggestions..."></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group half">
+            <label>Language</label>
+            <select id="healerLanguage">
+              <option value="typescript">TypeScript</option>
+              <option value="javascript">JavaScript</option>
+            </select>
+          </div>
+          <div class="form-group half">
+            <label>Context</label>
+            <input type="text" id="healerContext" placeholder="e.g. Button text changed" />
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-primary" id="healerRunBtn" onclick="runHealer()">
+            <span class="btn-icon">🔍</span> Run Healing Agent
+          </button>
+          <button class="btn-ghost" onclick="clearHealer()">Clear</button>
+        </div>
+
+        <div class="agent-log" id="healerLog">
+          <div class="log-header">🔄 Agent Activity</div>
+          <div class="log-body" id="healerLogBody"></div>
+        </div>
+      </div>
+
+      <div class="panel output-panel">
+        <div class="panel-header">
+          <h2>🩺 Healing Report</h2>
+          <div class="panel-actions" id="healerActions" style="display:none">
+            <button class="btn-sm" onclick="copyHealedCode()">📋 Copy Healed Code</button>
+            <button class="btn-sm" onclick="downloadHealedCode()">⬇ Download</button>
+          </div>
+        </div>
+        <div id="healerOutput">
+          <div class="empty-state">
+            <div class="empty-icon">💊</div>
+            <p>Paste a failing test and its error to get a fully healed version with diagnosis and explanations.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Page Preview Modal -->
+<div id="previewModal" class="modal" onclick="closePreview(event)">
+  <div class="modal-inner">
+    <div class="modal-header">
+      <span id="previewTitle">Page Preview</span>
+      <button class="modal-close" onclick="closePreviewBtn()">✕</button>
+    </div>
+    <div id="previewContent" class="modal-body">
+      <div class="loading-dots"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
