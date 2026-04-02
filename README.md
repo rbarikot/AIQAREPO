@@ -262,6 +262,6 @@ The system learns from every generated test:
 ### Ranjit Barik
 QA Engineer | Test Automation | AI-Driven Testing
 
-GitHub: https://github.com/sharath-sasidharan
+GitHub: https://github.com/rbarikot/AIQAREPO
 
 
