@@ -1,0 +1,70 @@
+{
+  "tests": [
+    {
+      "id": "3576f566-3f25-4b96-a05e-191752b7e5cf",
+      "feature": "DA",
+      "filename": "tests/da.spec.ts",
+      "testCode": "import { test, expect } from '@playwright/test';\nimport { DAPage } from '../pages/DAPage';\n\ntest.describe('DA Feature Tests', () => {\n  let daPage: DAPage;\n\n  test.beforeEach(async ({ page }) => {\n    daPage = new DAPage(page);\n    await daPage.navigate();\n  });\n\n  test('Successful Login with Valid Credentials', async ({ page }) => {\n    await daPage.login('admin', 'admin');\n    await expect(page).toHaveURL(/dashboard/);\n  });\n\n  test('Failed Login with Invalid Username', async ({ page }) => {\n    await daPage.login('invalidUser', 'admin');\n    await expect(daPage.isErrorMessageVisible()).resolves.toBe(true);\n  });\n\n  test('Failed Login with Invalid Password', async ({ page }) => {\n    await daPage.login('admin', 'invalidPassword');\n    await expect(daPage.isErrorMessageVisible()).resolves.toBe(true);\n  });\n\n  test('Failed Login with Empty Fields', async ({ page }) => {\n    await daPage.login('', '');\n    await expect(daPage.isErrorMessageVisible()).resolves.toBe(true);\n  });\n\n  test('Session Management After Successful Login', async ({ page }) => {\n    await daPage.login('admin', 'admin');\n    await daPage.reloadPage();\n    await expect(daPage.getCurrentURL()).toBe('http://10.119.33.78:8084/da/app#/management/applications');\n  });\n});",
+      "pageObjectCode": "import { Page, Locator } from '@playwright/test';\n\nexport class DAPage {\n  readonly page: Page;\n  readonly usernameInput: Locator;\n  readonly passwordInput: Locator;\n  readonly loginButton: Locator;\n  readonly errorMessage: Locator;\n\n  constructor(page: Page) {\n    this.page = page;\n    this.usernameInput = page.getByLabel('Username');\n    this.passwordInput = page.getByLabel('Password');\n    this.loginButton = page.getByRole('button', { name: 'Login' });\n    this.errorMessage = page.locator('text=Invalid username or password.');\n  }\n\n  async navigate() {\n    await this.page.goto('http://10.119.33.78:8084/da/login');\n  }\n\n  async login(username: string, password: string) {\n    await this.usernameInput.fill(username);\n    await this.passwordInput.fill(password);\n    await this.loginButton.click();\n  }\n\n  async isErrorMessageVisible() {\n    return await this.errorMessage.isVisible();\n  }\n\n  async reloadPage() {\n    await this.page.reload();\n  }\n\n  async getCurrentURL() {\n    return this.page.url();\n  }\n}",
+      "passed": true,
+      "locatorStrategies": [],
+      "executionTime": 0,
+      "url": "http://10.119.33.78:8084/da/",
+      "userActions": [
+        "Navigate to the login page.",
+        "Enter valid username.",
+        "Enter valid password.",
+        "Click the login button.",
+        "Navigate to the login page.",
+        "Enter invalid username.",
+        "Enter valid password.",
+        "Click the login button.",
+        "Navigate to the login page.",
+        "Enter valid username.",
+        "Enter invalid password.",
+        "Click the login button.",
+        "Navigate to the login page.",
+        "Leave username and password fields empty.",
+        "Click the login button.",
+        "Log in with valid credentials.",
+        "Refresh the page.",
+        "Check if the user is still logged in."
+      ],
+      "timestamp": "2026-04-02T03:44:47.934Z"
+    },
+    {
+      "id": "478c409c-44b5-41de-8db3-ec564601bdf9",
+      "feature": "SigninGitLab",
+      "filename": "tests/signin-gitlab.spec.ts",
+      "testCode": "import { test, expect } from '@playwright/test';\nimport { SigninGitLabPage } from '../pages/SigninGitLabPage';\n\ntest.describe('Signin GitLab Tests', () => {\n  let signinPage: SigninGitLabPage;\n\n  test.beforeEach(async ({ page }) => {\n    signinPage = new SigninGitLabPage(page);\n    await signinPage.navigate();\n  });\n\n  test('Successful login with valid credentials', async ({ page }) => {\n    await signinPage.login('admin', 'admin');\n    await expect(page).toHaveURL(/dashboard/);\n  });\n\n  test('Failed login with empty fields', async ({ page }) => {\n    await signinPage.signInButton.click();\n    const errorMessages = await signinPage.getErrorMessage();\n    expect(errorMessages).toContain('This field is required.');\n  });\n\n  test('Failed login with invalid credentials', async ({ page }) => {\n    await signinPage.login('invalidUser', 'invalidPass');\n    const errorMessages = await signinPage.getErrorMessage();\n    expect(errorMessages).toContain('Invalid username or password.');\n  });\n\n  test('Failed login with missing username', async ({ page }) => {\n    await signinPage.passwordInput.fill('admin');\n    await signinPage.signInButton.click();\n    const errorMessages = await signinPage.getErrorMessage();\n    expect(errorMessages).toContain('This field is required.');\n  });\n\n  test('Failed login with missing password', async ({ page }) => {\n    await signinPage.usernameInput.fill('admin');\n    await signinPage.signInButton.click();\n    const errorMessages = await signinPage.getErrorMessage();\n    expect(errorMessages).toContain('This field is required.');\n  });\n});",
+      "pageObjectCode": "import { Page, Locator } from '@playwright/test';\n\nexport class SigninGitLabPage {\n  readonly page: Page;\n  readonly usernameInput: Locator;\n  readonly passwordInput: Locator;\n  readonly signInButton: Locator;\n\n  constructor(page: Page) {\n    this.page = page;\n    this.usernameInput = page.getByTestId('username-field');\n    this.passwordInput = page.getByTestId('password-field');\n    this.signInButton = page.getByTestId('sign-in-button');\n  }\n\n  async navigate() {\n    await this.page.goto('https://gitlab.otxlab.net/users/sign_in');\n  }\n\n  async login(username: string, password: string) {\n    await this.usernameInput.fill(username);\n    await this.passwordInput.fill(password);\n    await this.signInButton.click();\n  }\n\n  async getErrorMessage() {\n    return await this.page.locator('text=This field is required.').allInnerTexts();\n  }\n}",
+      "passed": true,
+      "locatorStrategies": [],
+      "executionTime": 0,
+      "url": "https://gitlab.otxlab.net/users/sign_in",
+      "userActions": [
+        "Navigate to the login page.",
+        "Fill in the username field with 'admin'.",
+        "Fill in the password field with 'admin'.",
+        "Click the sign-in button.",
+        "Navigate to the login page.",
+        "Leave the username and password fields empty.",
+        "Click the sign-in button.",
+        "Navigate to the login page.",
+        "Fill in the username field with 'invalidUser'.",
+        "Fill in the password field with 'invalidPass'.",
+        "Click the sign-in button.",
+        "Navigate to the login page.",
+        "Leave the username field empty.",
+        "Fill in the password field with 'admin'.",
+        "Click the sign-in button.",
+        "Navigate to the login page.",
+        "Fill in the username field with 'admin'.",
+        "Leave the password field empty.",
+        "Click the sign-in button."
+      ],
+      "timestamp": "2026-04-02T03:46:19.985Z"
+    }
+  ],
+  "lastUpdated": "2026-04-02T03:46:19.985Z"
+}
