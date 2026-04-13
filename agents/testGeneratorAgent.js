@@ -301,31 +301,60 @@ export async function runTestGeneratorAgent(req, res) {
     const existingInspection = plan._inspection;
     const targetUrl = baseUrl || url || existingInspection?.url;
 
-    // [Journey execution logic - keeping it the same as before]
-    if (headed && targetUrl && existingInspection?.journey) {
+    // Check if scenario-based plan has steps we can use for headed mode
+    const hasScenarioSteps = plan.testPlans?.positive?.length > 0 || plan.testPlans?.negative?.length > 0;
+
+    if (headed && targetUrl && (existingInspection?.journey || hasScenarioSteps)) {
       send("status", { 
         message: "🌐 Re-executing journey in HEADED mode...", 
         step: 2 
       });
 
       const userActions = [];
-      if (plan.scenarios && plan.scenarios.length > 0) {
-        const firstScenario = plan.scenarios[0];
+      // Get first scenario from either plan.scenarios (manual) or plan.testPlans.positive (scenario-based)
+      const allScenarios = plan.scenarios || plan.testPlans?.positive || [];
+      if (allScenarios.length > 0) {
+        const firstScenario = allScenarios[0];
         if (firstScenario.steps && Array.isArray(firstScenario.steps)) {
           const testData = firstScenario.testData || {};
           
           firstScenario.steps.forEach(step => {
-            const stepLower = step.toLowerCase();
+            // Handle structured step objects from scenario-based plans
+            if (typeof step === 'object' && step.action) {
+              if (step.action === 'fill' && step.field && step.value) {
+                userActions.push({
+                  type: "fill",
+                  description: `Fill ${step.field} with ${step.value}`,
+                  label: step.field.charAt(0).toUpperCase() + step.field.slice(1),
+                  value: step.value
+                });
+              } else if (step.action === 'click' && (step.element || step.field)) {
+                const text = step.element || step.field;
+                userActions.push({
+                  type: "click",
+                  description: `Click ${text}`,
+                  text: text.replace(/\s+button$/i, ''),
+                  wait: /login|submit|sign/i.test(text) ? "navigation" : undefined
+                });
+              } else if (step.action === 'navigate' && step.url) {
+                // Navigation steps are handled by the initial page load
+              }
+              return;
+            }
+
+            // Handle text-based steps from manual plans
+            const stepStr = typeof step === 'string' ? step : String(step);
+            const stepLower = stepStr.toLowerCase();
             
             if (stepLower.includes("enter") || stepLower.includes("type") || stepLower.includes("fill")) {
-              const valueMatch = step.match(/['"]([^'"]+)['"]/);
+              const valueMatch = stepStr.match(/['"]([^'"]+)['"]/);
               let fieldName = null;
               
-              const inTheMatch = step.match(/(?:in|into|to)\s+(?:the\s+)?([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)\s+(?:field|input|box)/i);
+              const inTheMatch = stepStr.match(/(?:in|into|to)\s+(?:the\s+)?([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)\s+(?:field|input|box)/i);
               if (inTheMatch) fieldName = inTheMatch[1].trim();
               
               if (!fieldName) {
-                const directMatch = step.match(/(?:fill|enter|type)\s+(?:the\s+)?([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)\s+(?:field|with|as)/i);
+                const directMatch = stepStr.match(/(?:fill|enter|type)\s+(?:the\s+)?([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)\s+(?:field|with|as)/i);
                 if (directMatch) fieldName = directMatch[1].trim();
               }
               
@@ -338,7 +367,7 @@ export async function runTestGeneratorAgent(req, res) {
               if (fieldName && valueMatch) {
                 userActions.push({
                   type: "fill",
-                  description: step,
+                  description: stepStr,
                   label: fieldName,
                   value: valueMatch[1]
                 });
@@ -348,21 +377,21 @@ export async function runTestGeneratorAgent(req, res) {
             else if (stepLower.includes("click")) {
               let buttonText = null;
               
-              const theButtonMatch = step.match(/click\s+(?:the\s+)?([A-Z][A-Za-z\s]+?)\s+(?:button|link|icon|menu)/i);
+              const theButtonMatch = stepStr.match(/click\s+(?:the\s+)?([A-Z][A-Za-z\s]+?)\s+(?:button|link|icon|menu)/i);
               if (theButtonMatch) buttonText = theButtonMatch[1].trim();
               
               if (!buttonText) {
-                const onTheMatch = step.match(/click\s+on\s+(?:the\s+)?([A-Z][A-Za-z\s]+?)\s+(?:button|link|icon|menu)/i);
+                const onTheMatch = stepStr.match(/click\s+on\s+(?:the\s+)?([A-Z][A-Za-z\s]+?)\s+(?:button|link|icon|menu)/i);
                 if (onTheMatch) buttonText = onTheMatch[1].trim();
               }
               
               if (!buttonText) {
-                const quotedMatch = step.match(/click\s+['"]([^'"]+)['"]/i);
+                const quotedMatch = stepStr.match(/click\s+['"]([^'"]+)['"]/i);
                 if (quotedMatch) buttonText = quotedMatch[1].trim();
               }
               
               if (!buttonText) {
-                const bareMatch = step.match(/click\s+([A-Z][A-Za-z]+)(?:\s|\.)/i);
+                const bareMatch = stepStr.match(/click\s+([A-Z][A-Za-z]+)(?:\s|\.)/i);
                 if (bareMatch && !["the", "on", "a", "an", "to", "at"].includes(bareMatch[1].toLowerCase())) {
                   buttonText = bareMatch[1].trim();
                 }
@@ -371,7 +400,7 @@ export async function runTestGeneratorAgent(req, res) {
               if (buttonText) {
                 userActions.push({
                   type: "click",
-                  description: step,
+                  description: stepStr,
                   text: buttonText,
                   wait: stepLower.includes("login") || stepLower.includes("submit") || stepLower.includes("sign") ? "navigation" : undefined
                 });

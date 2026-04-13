@@ -1,66 +1,75 @@
 # 🤖 AI QA Test Case Generator
 
-An AI-powered multi-agent system that generates production-quality Playwright test automation from a URL and user actions. It launches a real browser, inspects the live page, generates Page Object Model (POM) + test specs, executes them, and self-heals failures — all orchestrated via LangGraph.
+An AI-powered multi-agent system that generates production-quality Playwright test automation by **recording user actions in a real browser**, generating positive & negative test scenarios via AI, and producing Page Object Model (POM) + test specs — all orchestrated through a unified web UI and LangGraph.
 
 ---
 
 ## 🚀 Overview
 
-AI QA Test Case Generator uses a **three-agent pipeline** backed by real browser inspection to produce Playwright TypeScript tests that actually work:
+AI QA Test Case Generator uses a **five-agent pipeline** backed by real browser recording and AI scenario generation to produce comprehensive Playwright TypeScript tests:
 
-1. **Planner Agent** — Parses user actions, launches Chromium, performs a multi-step browser journey, and extracts real page elements & locators.
-2. **Generator Agent** — Uses the live inspection data + RAG knowledge base patterns + a Playwright skill file to generate Page Object classes and test specs via GPT-4o-mini.
-3. **Healer Agent** — Analyzes test failures, identifies root causes, and produces fully healed code with alternative selectors.
+1. **Recorder Agent** — Opens a headed browser, records user clicks/fills/navigation in real-time, and captures the journey as structured data.
+2. **Scenario Generator Agent** — Analyzes the recorded journey and uses GPT-4o-mini to generate 5–10 positive and 10–15 negative test scenarios (validation, security, boundary, edge cases).
+3. **Enhanced Planner Agent** — Formats AI-generated scenarios into detailed, structured test plans ready for code generation.
+4. **Generator Agent** — Uses the test plans + RAG knowledge base patterns + a Playwright skill file to generate Page Object classes and test specs via GPT-4o-mini.
+5. **Healer Agent** — Analyzes test failures, identifies root causes, and produces fully healed code with alternative selectors.
 
-A **LangGraph Orchestrator** ties all three agents into an automated workflow with conditional self-healing loops.
+A **LangGraph Orchestrator** ties all agents into an automated workflow with conditional self-healing loops. A **Workflow Orchestrator** manages the end-to-end record-to-generate pipeline.
 
 ---
 
 ## 🎯 Key Features
 
-- **Real Browser Inspection** — Launches Chromium to execute user journeys and extract actual DOM elements, locators, and screenshots
+- **Browser Recording** — Records user interactions (clicks, fills, navigation) in a headed Chromium browser with automatic page snapshots
+- **AI Scenario Generation** — Generates comprehensive positive and negative test scenarios from recorded journeys using structured JSON output
+- **Real Browser Inspection** — Launches Chromium in headed mode to execute user journeys and extract actual DOM elements, locators, and screenshots
 - **Multi-Agent LangGraph Orchestration** — `START → Planner → Generator → Executor → (Healer if failed) → END` with up to 3 healing retries
-- **Page Object Model Generation** — Produces separate POM classes (`pages/LoginPage.ts`) and test specs (`tests/login.spec.ts`)
+- **Unified Workflow** — One-click pipeline: Record → Generate Scenarios → Plan → Generate Tests → Heal
+- **Page Object Model Generation** — Produces separate POM classes (`pages/LoginPage.ts`) and test specs (`tests/login.spec.ts`) with dynamic naming
 - **RAG Knowledge Base** — Stores successful test patterns in JSON and retrieves similar examples to improve future generation
 - **Self-Healing Tests** — AI-powered failure analysis with root cause classification and automatic code repair
 - **Persistent Test Storage** — Full CRUD operations for generated tests with search, export/import, and statistics
 - **Skill System** — Loads domain-specific Playwright best practices from `skills/playwright-qa/SKILL.md` at generation time
 - **Server-Sent Events (SSE)** — Real-time streaming of agent progress to the web UI
-- **Web UI** — Dark-themed 3-tab interface (Planner / Generator / Healer) with live page preview, screenshots, and file display
+- **Web UI** — Dark-themed 4-tab interface (Recorder / Planner / Generator / Healer) with scenario selection, live screenshots, and file display
 
 ---
 
 ## 🏗️ Architecture
 
 ```
-┌──────────────┐      ┌───────────────┐      ┌──────────────┐
-│   PLANNER    │ ───→ │   GENERATOR   │ ───→ │    HEALER    │
-│              │      │               │      │              │
-│ Parse actions│      │ Load SKILL.md │      │ Analyze      │
-│ Launch browser│     │ Query RAG KB  │      │ failures     │
-│ Execute journey│    │ Generate POM  │      │ Fix code     │
-│ Extract elements│   │ + test specs  │      │ Alt selectors│
-└──────────────┘      └───────────────┘      └──────────────┘
-                              │
-                    ┌─────────┴─────────┐
-                    │  LangGraph State  │
-                    │    Orchestrator   │
-                    │                   │
-                    │ Executor → Healer │
-                    │   (loop ≤ 3x)    │
-                    └───────────────────┘
+┌──────────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
+│   RECORDER   │ →  │  SCENARIO    │ →  │   PLANNER    │ →  │  GENERATOR   │ →  │    HEALER    │
+│              │    │  GENERATOR   │    │              │    │              │    │              │
+│ Open browser │    │ Analyze      │    │ Format into  │    │ Load SKILL.md│    │ Analyze      │
+│ Record clicks│    │ journey data │    │ test plans   │    │ Query RAG KB │    │ failures     │
+│ Record fills │    │ AI generates │    │ Route manual │    │ Generate POM │    │ Fix code     │
+│ Capture state│    │ pos+neg cases│    │ or scenario  │    │ + test specs │    │ Alt selectors│
+└──────────────┘    └──────────────┘    └──────────────┘    └──────────────┘    └──────────────┘
+                                                                    │
+                                                          ┌─────────┴─────────┐
+                                                          │  LangGraph State  │
+                                                          │    Orchestrator   │
+                                                          │                   │
+                                                          │ Executor → Healer │
+                                                          │   (loop ≤ 3x)    │
+                                                          └───────────────────┘
 ```
 
-### Data Flow (LangGraph Workflow)
+### Data Flow
 
 ```
-User Input (URL + Actions)
+User clicks "Start Recording"
     ↓
-Planner: Browser Inspection → Journey Data + Element Map
+Recorder: Opens headed browser → User performs actions → Structured journey data
+    ↓
+Scenario Generator: GPT-4o-mini → Positive scenarios (5-10) + Negative scenarios (10-15)
+    ↓
+Planner: Formats scenarios into detailed test plans (or accepts manual input)
     ↓
 Generator: GPT-4o-mini + SKILL.md + RAG Context → POM + Spec Files
     ↓
-Executor: npx playwright test → Results
+[Optional] Executor: npx playwright test → Results
     ↓
 [If failures] → Healer: AI Analysis → Fixed Code → Re-execute (up to 3x)
     ↓
@@ -75,7 +84,7 @@ Storage: Save to TestStorage (index.json) + RAG Knowledge Base (knowledge-base.j
 |-------|-----------|
 | **Runtime** | Node.js (ES Modules) |
 | **Server** | Express.js 5 with SSE streaming |
-| **AI/LLM** | OpenAI GPT-4o-mini |
+| **AI/LLM** | OpenAI GPT-4o-mini (with `response_format: json_object`) |
 | **Orchestration** | LangGraph (`@langchain/langgraph`) + LangChain |
 | **Browser Automation** | Playwright (Chromium) |
 | **Frontend** | Vanilla HTML/CSS/JS (dark theme) |
@@ -87,23 +96,24 @@ Storage: Save to TestStorage (index.json) + RAG Knowledge Base (knowledge-base.j
 
 ```
 AI-QA-Test-Case-Generator-master/
-├── server.js                          # Express server — routes, SSE endpoints, system init
+├── server.js                          # Express server — all routes, SSE endpoints, system init
 ├── package.json                       # Dependencies & project config
 ├── .env                               # OPENAI_API_KEY (not committed)
 ├── .gitignore
 │
 ├── agents/
-│   ├── plannerAgent.js                # Parses user actions → browser journey → test plan
+│   ├── recorderAgent.js               # Records user interactions in a headed browser
+│   ├── scenarioGeneratorAgent.js      # AI generates positive & negative test scenarios
+│   ├── enhancedPlannerAgent.js        # Formats scenarios into structured test plans
+│   ├── plannerAgent.js                # Original planner — browser inspection & manual planning
 │   ├── browserInspector.js            # Playwright browser launcher & DOM inspector
 │   ├── testGeneratorAgent.js          # AI code generation (POM + specs) with SKILL & RAG
 │   ├── healingAgent.js                # Self-healing agent for failed tests
 │   ├── langGraphOrchestrator.js       # LangGraph state graph (Planner→Generator→Executor→Healer)
 │   └── ragKnowledgeBase.js            # JSON-based RAG knowledge base for test patterns
 │
-├── services/
-│   └── playwrightGenerator.js         # Legacy Playwright spec scaffolder
-│
 ├── utils/
+│   ├── workflowOrchestrator.js        # End-to-end workflow: Record → Scenarios → Plan → Generate
 │   └── testStorage.js                 # Persistent test storage with CRUD, search, export/import
 │
 ├── skills/
@@ -111,13 +121,20 @@ AI-QA-Test-Case-Generator-master/
 │       └── SKILL.md                   # Domain knowledge loaded by Generator Agent
 │
 ├── public/
-│   ├── index.html                     # 3-tab Web UI (Planner / Generator / Healer)
-│   ├── script.js                      # Frontend SSE handling, tab switching, file display
+│   ├── index.html                     # 4-tab Web UI (Recorder / Planner / Generator / Healer)
+│   ├── script.js                      # Planner, Generator, Healer frontend logic
+│   ├── recorder-script.js             # Recorder & Scenario Generator frontend logic
 │   └── style.css                      # Dark theme styling
 │
 ├── data/
 │   ├── knowledge-base.json            # RAG knowledge base (stored test patterns)
 │   └── tests/                         # Test storage index + individual test JSON files
+│
+├── recordings/                        # Recorded journey data, scenarios, and plans
+│   ├── journey-*.json                 # Raw recorded journeys
+│   ├── scenarios/                     # Generated scenario files
+│   ├── plans/                         # Generated plan files
+│   └── screenshots/                   # Step-by-step screenshots
 │
 ├── pages/                             # Generated Page Object files (runtime output)
 │   └── *.ts
@@ -132,11 +149,30 @@ AI-QA-Test-Case-Generator-master/
 
 ## 📡 API Endpoints
 
+### Recorder & Scenarios
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/recorder/start` | Start recording in a headed browser |
+| `POST` | `/api/recorder/stop` | Stop recording & return journey data |
+| `GET`  | `/api/recorder/status/:id` | Get recording session status |
+| `POST` | `/api/recorder/cleanup` | Force cleanup lingering browser sessions |
+| `POST` | `/api/scenarios/generate` | Generate positive & negative scenarios from journey |
+| `GET`  | `/api/scenarios/:id` | Get previously generated scenarios |
+
+### Workflow Orchestration
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/workflow/record-and-generate` | Complete end-to-end workflow |
+| `POST` | `/api/workflow/stop-and-continue` | Stop recording & continue to generation |
+| `GET`  | `/api/workflow/sessions` | List all workflow sessions |
+
 ### Agent Endpoints (SSE Streaming)
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| `POST` | `/agent/planner` | Browser inspection & test planning |
+| `POST` | `/agent/planner` | Hybrid planner — scenarios mode or manual browser inspection |
 | `POST` | `/agent/generator` | AI test code generation (POM + specs) |
 | `POST` | `/agent/healer` | Self-healing for failed tests |
 | `POST` | `/agent/langgraph` | Full multi-agent orchestrated workflow |
@@ -212,12 +248,22 @@ Open in browser: **http://localhost:5000**
 
 ## 🧪 Usage
 
-### Web UI (Recommended)
+### Web UI — Recorder Workflow (Recommended)
 
 1. Open `http://localhost:5000`
-2. **Planner Tab** — Enter a URL and describe the user journey (e.g., "Login with admin/admin, navigate to dashboard")
+2. **Recorder Tab** — Enter a base URL, click **Start Recording**. A headed browser opens — perform your actions (login, navigate, fill forms). Click **Stop & Generate Scenarios** when done.
+3. The AI generates positive (happy path, boundary values, data combos) and negative (validation, security, edge cases) test scenarios.
+4. Select scenarios and click **Send to Planner →**.
+5. **Planner Tab** — Review the formatted test plans, click **Send to Generator →**.
+6. **Generator Tab** — The AI generates Page Object + test spec files. Download or copy the generated code.
+7. **Healer Tab** — If tests fail, paste the error — the healer will fix the code.
+
+### Web UI — Manual Workflow
+
+1. Open `http://localhost:5000`
+2. **Planner Tab** — Select "Manual Input", enter a URL and describe the feature/user journey
 3. **Generator Tab** — Review the plan, click Generate to produce POM + test specs
-4. **Healer Tab** — If tests fail, paste the error — the healer will fix the code
+4. **Healer Tab** — If tests fail, paste the error — the healer fixes the code
 
 ### LangGraph Full Pipeline
 

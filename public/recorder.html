@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI QA Test Generator - Record & Generate</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      color: #667eea;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #666;
+      font-size: 1.1rem;
+    }
+
+    .workflow-section {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .workflow-title {
+      font-size: 1.8rem;
+      color: #333;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .workflow-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .step-card {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 20px;
+      border-left: 4px solid #667eea;
+    }
+
+    .step-number {
+      width: 30px;
+      height: 30px;
+      background: #667eea;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .step-title {
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    .step-description {
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    input[type="text"], select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+
+    input[type="text"]:focus, select:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: #667eea;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #5568d3;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-success {
+      background: #28a745;
+      color: white;
+    }
+
+    .btn-success:hover {
+      background: #218838;
+    }
+
+    .btn-danger {
+      background: #dc3545;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #c82333;
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: #5a6268;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .status-panel {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    .status-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .status-item:last-child {
+      border-bottom: none;
+    }
+
+    .status-label {
+      font-weight: 600;
+      color: #333;
+    }
+
+    .status-value {
+      color: #667eea;
+      font-weight: bold;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .message {
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+      font-weight: 500;
+    }
+
+    .message-success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .message-error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .message-info {
+      background: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+    }
+
+    .scenarios-preview {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .scenario-card {
+      background: white;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 15px;
+    }
+
+    .scenario-card.positive {
+      border-left: 4px solid #28a745;
+    }
+
+    .scenario-card.negative {
+      border-left: 4px solid #dc3545;
+    }
+
+    .scenario-id {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 5px;
+    }
+
+    .scenario-title {
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    .scenario-type {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .scenario-type.positive {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .scenario-type.negative {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>🎬 AI QA Test Generator</h1>
+      <p class="subtitle">Record actions → Generate positive & negative test scenarios</p>
+    </div>
+
+    <!-- Workflow Overview -->
+    <div class="workflow-section">
+      <div class="workflow-title">
+        <span>📋</span> Workflow Overview
+      </div>
+      <div class="workflow-steps">
+        <div class="step-card">
+          <div class="step-number">1</div>
+          <div class="step-title">Record Actions</div>
+          <div class="step-description">Open website and perform actions manually</div>
+        </div>
+        <div class="step-card">
+          <div class="step-number">2</div>
+          <div class="step-title">Generate Scenarios</div>
+          <div class="step-description">AI creates 15-25 test scenarios</div>
+        </div>
+        <div class="step-card">
+          <div class="step-number">3</div>
+          <div class="step-title">Create Plans</div>
+          <div class="step-description">Detailed test plans for each scenario</div>
+        </div>
+        <div class="step-card">
+          <div class="step-number">4</div>
+          <div class="step-title">Generate Tests</div>
+          <div class="step-description">Playwright test files ready to run</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recording Controls -->
+    <div class="workflow-section">
+      <div class="workflow-title">
+        <span>🎬</span> Step 1: Record User Actions
+      </div>
+
+      <div class="input-group">
+        <label for="baseUrl">Base URL</label>
+        <input 
+          type="text" 
+          id="baseUrl" 
+          placeholder="https://example.com/login"
+          value="https://gitlab.otxlab.net/users/sign_in"
+        />
+      </div>
+
+      <div class="input-group">
+        <label for="language">Test Language</label>
+        <select id="language">
+          <option value="typescript">TypeScript</option>
+          <option value="javascript">JavaScript</option>
+        </select>
+      </div>
+
+      <div class="button-group">
+        <button class="btn-primary" id="btnStartRecording">
+          <span>🎬</span> Start Recording
+        </button>
+        <button class="btn-danger" id="btnStopRecording" disabled>
+          <span>🛑</span> Stop Recording
+        </button>
+      </div>
+
+      <div id="recordingStatus" class="status-panel hidden">
+        <div class="status-item">
+          <span class="status-label">Session ID:</span>
+          <span class="status-value" id="sessionId">-</span>
+        </div>
+        <div class="status-item">
+          <span class="status-label">Status:</span>
+          <span class="status-value" id="recordingState">Recording...</span>
+        </div>
+        <div class="status-item">
+          <span class="status-label">Browser:</span>
+          <span class="status-value">Open - Perform your actions</span>
+        </div>
+      </div>
+
+      <div id="messages"></div>
+    </div>
+
+    <!-- Scenario Results -->
+    <div class="workflow-section hidden" id="scenariosSection">
+      <div class="workflow-title">
+        <span>✅</span> Generated Scenarios
+      </div>
+      <div class="status-panel">
+        <div class="status-item">
+          <span class="status-label">Total Scenarios:</span>
+          <span class="status-value" id="totalScenarios">-</span>
+        </div>
+        <div class="status-item">
+          <span class="status-label">Positive Tests:</span>
+          <span class="status-value" id="positiveCount">-</span>
+        </div>
+        <div class="status-item">
+          <span class="status-label">Negative Tests:</span>
+          <span class="status-value" id="negativeCount">-</span>
+        </div>
+      </div>
+
+      <div id="scenariosPreview" class="scenarios-preview"></div>
+
+      <div class="button-group" style="margin-top: 20px;">
+        <button class="btn-success" id="btnGenerateTests">
+          <span>🔨</span> Generate All Test Files
+        </button>
+        <button class="btn-secondary" id="btnDownloadScenarios">
+          <span>📥</span> Download Scenarios JSON
+        </button>
+      </div>
+    </div>
+
+    <!-- Test Generation Results -->
+    <div class="workflow-section hidden" id="testsSection">
+      <div class="workflow-title">
+        <span>🎉</span> Generated Test Files
+      </div>
+      <div class="status-panel">
+        <div class="status-item">
+          <span class="status-label">Total Test Files:</span>
+          <span class="status-value" id="totalTests">-</span>
+        </div>
+        <div class="status-item">
+          <span class="status-label">Positive Tests:</span>
+          <span class="status-value" id="positiveTests">-</span>
+        </div>
+        <div class="status-item">
+          <span class="status-label">Negative Tests:</span>
+          <span class="status-value" id="negativeTests">-</span>
+        </div>
+      </div>
+
+      <div class="message message-success">
+        ✅ All test files generated successfully! Check your project directory.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = 'http://localhost:5000';
+    let currentSessionId = null;
+    let currentScenarios = null;
+
+    // Elements
+    const btnStartRecording = document.getElementById('btnStartRecording');
+    const btnStopRecording = document.getElementById('btnStopRecording');
+    const btnGenerateTests = document.getElementById('btnGenerateTests');
+    const btnDownloadScenarios = document.getElementById('btnDownloadScenarios');
+    const baseUrlInput = document.getElementById('baseUrl');
+    const languageSelect = document.getElementById('language');
+    const recordingStatus = document.getElementById('recordingStatus');
+    const messagesDiv = document.getElementById('messages');
+    const scenariosSection = document.getElementById('scenariosSection');
+    const testsSection = document.getElementById('testsSection');
+
+    // Start Recording
+    btnStartRecording.addEventListener('click', async () => {
+      const baseUrl = baseUrlInput.value.trim();
+      
+      if (!baseUrl) {
+        showMessage('Please enter a base URL', 'error');
+        return;
+      }
+
+      try {
+        btnStartRecording.disabled = true;
+        btnStartRecording.innerHTML = '<span class="loading"></span> Starting...';
+
+        const response = await fetch(`${API_BASE}/api/recorder/start`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ baseUrl }),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          currentSessionId = data.sessionId;
+          document.getElementById('sessionId').textContent = currentSessionId;
+          
+          recordingStatus.classList.remove('hidden');
+          btnStopRecording.disabled = false;
+          
+          showMessage(
+            '🎬 Recording started! Browser is open. Perform your actions and click "Stop Recording" when done.',
+            'success'
+          );
+        } else {
+          throw new Error(data.error || 'Failed to start recording');
+        }
+
+      } catch (error) {
+        showMessage(`Error: ${error.message}`, 'error');
+        btnStartRecording.disabled = false;
+        btnStartRecording.innerHTML = '<span>🎬</span> Start Recording';
+      }
+    });
+
+    // Stop Recording
+    btnStopRecording.addEventListener('click', async () => {
+      try {
+        btnStopRecording.disabled = true;
+        btnStopRecording.innerHTML = '<span class="loading"></span> Stopping...';
+
+        showMessage('🛑 Stopping recording and generating scenarios...', 'info');
+
+        const response = await fetch(`${API_BASE}/api/workflow/stop-and-continue`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            sessionId: currentSessionId,
+            baseUrl: baseUrlInput.value.trim(), // ← Include baseUrl
+            options: {
+              language: languageSelect.value
+            }
+          }),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          currentScenarios = data.results.scenarios;
+          
+          document.getElementById('recordingState').textContent = 'Completed';
+          displayScenarios(currentScenarios);
+          
+          showMessage(
+            `✅ Generated ${data.results.scenarios.totalScenarios} test scenarios! Review them below.`,
+            'success'
+          );
+
+          scenariosSection.classList.remove('hidden');
+        } else {
+          throw new Error(data.error || 'Failed to stop recording');
+        }
+
+      } catch (error) {
+        showMessage(`Error: ${error.message}`, 'error');
+        btnStopRecording.disabled = false;
+        btnStopRecording.innerHTML = '<span>🛑</span> Stop Recording';
+      } finally {
+        btnStartRecording.disabled = false;
+        btnStartRecording.innerHTML = '<span>🎬</span> Start Recording';
+      }
+    });
+
+    // Display Scenarios
+    function displayScenarios(scenarios) {
+      document.getElementById('totalScenarios').textContent = scenarios.totalScenarios;
+      document.getElementById('positiveCount').textContent = scenarios.scenarios.positive.length;
+      document.getElementById('negativeCount').textContent = scenarios.scenarios.negative.length;
+
+      const previewDiv = document.getElementById('scenariosPreview');
+      previewDiv.innerHTML = '';
+
+      // Show first 6 scenarios (3 positive, 3 negative)
+      const positiveSamples = scenarios.scenarios.positive.slice(0, 3);
+      const negativeSamples = scenarios.scenarios.negative.slice(0, 3);
+
+      [...positiveSamples, ...negativeSamples].forEach(scenario => {
+        const card = document.createElement('div');
+        card.className = `scenario-card ${scenario.type}`;
+        card.innerHTML = `
+          <div class="scenario-id">${scenario.scenarioId}</div>
+          <div class="scenario-title">${scenario.title}</div>
+          <span class="scenario-type ${scenario.type}">${scenario.type.toUpperCase()}</span>
+        `;
+        previewDiv.appendChild(card);
+      });
+    }
+
+    // Generate Tests (Placeholder - integrate with your generator)
+    btnGenerateTests.addEventListener('click', async () => {
+      showMessage('🔨 Test generation will be integrated with your existing generator agent', 'info');
+      testsSection.classList.remove('hidden');
+      
+      // Update test counts
+      document.getElementById('totalTests').textContent = currentScenarios.totalScenarios;
+      document.getElementById('positiveTests').textContent = currentScenarios.scenarios.positive.length;
+      document.getElementById('negativeTests').textContent = currentScenarios.scenarios.negative.length;
+    });
+
+    // Download Scenarios
+    btnDownloadScenarios.addEventListener('click', () => {
+      const blob = new Blob([JSON.stringify(currentScenarios, null, 2)], {
+        type: 'application/json'
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `scenarios-${currentSessionId}.json`;
+      a.click();
+    });
+
+    // Show Message
+    function showMessage(text, type) {
+      messagesDiv.innerHTML = `<div class="message message-${type}">${text}</div>`;
+      
+      if (type === 'success') {
+        setTimeout(() => {
+          messagesDiv.innerHTML = '';
+        }, 5000);
+      }
+    }
+  </script>
+</body>
+</html>

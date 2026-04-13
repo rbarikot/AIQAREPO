@@ -1,0 +1,2247 @@
+{
+  "id": "7c71f06d-4983-4784-990b-8d58948cac64",
+  "feature": "Formatted",
+  "url": "https://cirro.io/users/sign_in",
+  "language": "typescript",
+  "timestamp": "2026-04-13T13:20:30.423Z",
+  "passed": null,
+  "executionTime": 0,
+  "fileCount": 2,
+  "version": 1,
+  "tags": [
+    "form"
+  ],
+  "summary": {
+    "pageObjectFile": "pages/FormattedPage.ts",
+    "testSpecFile": "tests/formatted.spec.ts",
+    "locatorCount": 0,
+    "testCount": 0
+  },
+  "files": [
+    {
+      "filename": "pages/FormattedPage.ts",
+      "type": "page-object"
+    },
+    {
+      "filename": "tests/formatted.spec.ts",
+      "type": "test-spec"
+    }
+  ],
+  "plan": {
+    "feature": "user[email]",
+    "baseUrl": "https://cirro.io/users/sign_in",
+    "language": "typescript",
+    "sessionId": "1776086266628",
+    "testPlans": {
+      "positive": [
+        {
+          "scenarioId": "POS-001",
+          "testType": "e2e",
+          "pageTitle": "Test Page",
+          "summary": "Successful login with valid credentials",
+          "description": "User logs in with correct email and password",
+          "journeySteps": [
+            {
+              "step": 1,
+              "action": "navigate",
+              "description": "navigate ",
+              "locatorStrategy": "auto"
+            },
+            {
+              "step": 2,
+              "action": "fill",
+              "element": "user[email]",
+              "value": "admin@gmail.com",
+              "description": "fill user[email]",
+              "locatorStrategy": "getByXPath"
+            },
+            {
+              "step": 3,
+              "action": "fill",
+              "element": "user[password]",
+              "value": "ValidPassword123!",
+              "description": "fill user[password]",
+              "locatorStrategy": "getByXPath"
+            },
+            {
+              "step": 4,
+              "action": "click",
+              "element": "Submit button",
+              "description": "click Submit button",
+              "locatorStrategy": "getByXPath"
+            }
+          ],
+          "pageElements": [
+            {
+              "name": "user[email]",
+              "locatorStrategy": "getByXPath",
+              "locatorValue": "user[email]",
+              "description": "Element for fill"
+            },
+            {
+              "name": "user[password]",
+              "locatorStrategy": "getByXPath",
+              "locatorValue": "user[password]",
+              "description": "Element for fill"
+            },
+            {
+              "name": "Submit button",
+              "locatorStrategy": "getByXPath",
+              "locatorValue": "Submit button",
+              "description": "Element for click"
+            }
+          ],
+          "assertions": [
+            {
+              "type": "visible",
+              "element": "success message",
+              "expectedValue": "Login successful! Welcome back!"
+            },
+            {
+              "type": "url",
+              "expectedValue": "/dashboard"
+            }
+          ],
+          "testDataSets": {
+            "main": {
+              "email": "admin@gmail.com",
+              "password": "ValidPassword123!"
+            },
+            "expectedOutcome": {
+              "successMessage": "Login successful! Welcome back!",
+              "redirectUrl": "/dashboard",
+              "elementsVisible": [
+                "user profile",
+                "logout button"
+              ]
+            }
+          },
+          "recommendations": [
+            "happy-path",
+            "authentication"
+          ],
+          "_inspection": {
+            "url": "https://cirro.io/users/sign_in",
+            "timestamp": 1776086374520,
+            "realInspection": false
+          },
+          "_journeySteps": 4,
+          "_scenarioOriginal": {
+            "scenarioId": "POS-001",
+            "title": "Successful login with valid credentials",
+            "description": "User logs in with correct email and password",
+            "type": "positive",
+            "priority": "high",
+            "steps": [
+              {
+                "stepNumber": 1,
+                "action": "navigate",
+                "url": "https://example.com/login"
+              },
+              {
+                "stepNumber": 2,
+                "action": "fill",
+                "field": "user[email]",
+                "value": "admin@gmail.com",
+                "locatorStrategy": "getByXPath"
+              },
+              {
+                "stepNumber": 3,
+                "action": "fill",
+                "field": "user[password]",
+                "value": "ValidPassword123!",
+                "locatorStrategy": "getByXPath"
+              },
+              {
+                "stepNumber": 4,
+                "action": "click",
+                "element": "Submit button",
+                "locatorStrategy": "getByXPath"
+              }
+            ],
+            "expectedOutcome": {
+              "successMessage": "Login successful! Welcome back!",
+              "redirectUrl": "/dashboard",
+              "elementsVisible": [
+                "user profile",
+                "logout button"
+              ]
+            },
+            "testData": {
+              "email": "admin@gmail.com",
+              "password": "ValidPassword123!"
+            },
+            "tags": [
+              "happy-path",
+              "authentication"
+            ]
+          }
+        },
+        {
+          "scenarioId": "POS-002",
+          "testType": "e2e",
+          "pageTitle": "Test Page",
+          "summary": "Successful login with minimal valid email input",
+          "description": "User logs in with the minimal valid email address and password",
+          "journeySteps": [
+            {
+              "step": 1,
+              "action": "navigate",
+              "description": "navigate ",
+              "locatorStrategy": "auto"
+            },
+            {
+              "step": 2,
+              "action": "fill",
+              "element": "user[email]",
+              "value": "a@b.co",
+              "description": "fill user[email]",
+              "locatorStrategy": "getByXPath"
+            },
+            {
+              "step": 3,
+              "action": "fill",
+              "element": "user[password]",
+              "value": "ValidPassword123!",
+              "description": "fill user[password]",
+              "locatorStrategy": "getByXPath"
+            },
+            {
+              "step": 4,
+              "action": "click",
+              "element": "Submit button",
+              "description": "click Submit button",
+              "locatorStrategy": "getByXPath"
+            }
+          ],
+          "pageElements": [
+            {
+              "name": "user[email]",
+              "locatorStrategy": "getByXPath",
+              "locatorValue": "user[email]",
+              "description": "Element for fill"
+            },
+            {
+              "name": "user[password]",
+              "locatorStrategy": "getByXPath",
+              "locatorValue": "user[password]",
+              "description": "Element for fill"
+            },
+            {
+              "name": "Submit button",
+              "locatorStrategy": "getByXPath",
+              "locatorValue": "Submit button",
+              "description": "Element for click"
+            }
+          ],
+          "assertions": [
+            {
+              "type": "visible",
+              "element": "success message",
+              "expectedValue": "Login successful! Welcome back!"
+            },
+            {
+              "type": "url",
+              "expectedValue": "/dashboard"
+            }
+          ],
+          "testDataSets": {
+            "main": {
+              "email": "a@b.co",
+              "password": "ValidPassword123!"
+            },
+            "expectedOutcome": {
+              "successMessage": "Login successful! Welcome back!",
+              "redirectUrl": "/dashboard",
+              "elementsVisible": [
+                "user profile",
+                "logout button"
+              ]
+            }
+          },
+          "recommendations": [
+            "boundary",
+            "authentication"
+          ],
+          "_inspection": {
+            "url": "https://cirro.io/users/sign_in",
+            "timestamp": 1776086374520,
+            "realInspection": false
+          },
+          "_journeySteps": 4,
+          "_scenarioOriginal": {
+            "scenarioId": "POS-002",
+            "title": "Successful login with minimal valid email input",
+            "description": "User logs in with the minimal valid email address and password",
+            "type": "positive",
+            "priority": "medium",
+            "steps": [
+              {
+                "stepNumber": 1,
+                "action": "navigate",
+                "url": "https://example.com/login"
+              },
+              {
+                "stepNumber": 2,
+                "action": "fill",
+                "field": "user[email]",
+                "value": "a@b.co",
+                "locatorStrategy": "getByXPath"
+              },
+              {
+                "stepNumber": 3,
+                "action": "fill",
+                "field": "user[password]",
+                "value": "ValidPassword123!",
+                "locatorStrategy": "getByXPath"
+              },
+              {
+                "stepNumber": 4,
+                "action": "click",
+                "element": "Submit button",
+                "locatorStrategy": "getByXPath"
+              }
+            ],
+            "expectedOutcome": {
+              "successMessage": "Login successful! Welcome back!",
+              "redirectUrl": "/dashboard",
+              "elementsVisible": [
+                "user profile",
+                "logout button"
+              ]
+            },
+            "testData": {
+              "email": "a@b.co",
+              "password": "ValidPassword123!"
+            },
+            "tags": [
+              "boundary",
+              "authentication"
+            ]
+          }
+        },
+        {
+          "scenarioId": "POS-003",
+          "testType": "e2e",
+          "pageTitle": "Test Page",
+          "summary": "Successful login with password input variations",
+          "description": "User logs in with the same email but different valid password variations",
+          "journeySteps": [
+            {
+              "step": 1,
+              "action": "navigate",
+              "description": "navigate ",
+              "locatorStrategy": "auto"
+            },
+            {
+              "step": 2,
+              "action": "fill",
+              "element": "user[email]",
+              "value": "admin@gmail.com",
+              "description": "fill user[email]",
+              "locatorStrategy": "getByXPath"
+            },
+            {
+              "step": 3,
+              "action": "fill",
+              "element": "user[password]",
+              "value": "ValidPassword123!",
+              "description": "fill user[password]",
+              "locatorStrategy": "getByXPath"
+            },
+            {
+              "step": 4,
+              "action": "click",
+              "element": "Submit button",
+              "description": "click Submit button",
+              "locatorStrategy": "getByXPath"
+            },
+            {
+              "step": 5,
+              "action": "navigate",
+              "description": "navigate ",
+              "locatorStrategy": "auto"
+            },
+            {
+              "step": 6,
+              "action": "fill",
+              "element": "user[email]",
+              "value": "admin@gmail.com",
+              "description": "fill user[email]",
+              "locatorStrategy": "getByXPath"
+            },
+            {
+              "step": 7,
+              "action": "fill",
+              "element": "user[password]",
+              "value": "AnotherValidPassword456!",
+              "description": "fill user[password]",
+              "locatorStrategy": "getByXPath"
+            },
+            {
+              "step": 8,
+              "action": "click",
+              "element": "Submit button",
+              "description": "click Submit button",
+              "locatorStrategy": "getByXPath"
+            }
+          ],
+          "pageElements": [
+            {
+              "name": "user[email]",
+              "locatorStrategy": "getByXPath",
+              "locatorValue": "user[email]",
+              "description": "Element for fill"
+            },
+            {
+              "name": "user[password]",
+              "locatorStrategy": "getByXPath",
+              "locatorValue": "user[password]",
+              "description": "Element for fill"
+            },
+            {
+              "name": "Submit button",
+              "locatorStrategy": "getByXPath",
+              "locatorValue": "Submit button",
+              "description": "Element for click"
+            }
+          ],
+          "assertions": [
+            {
+              "type": "visible",
+              "element": "success message",
+              "expectedValue": "Login successful! Welcome back!"
+            },
+            {
+              "type": "url",
+              "expectedValue": "/dashboard"
+            }
+          ],
+          "testDataSets": {
+            "main": {
+              "email": "admin@gmail.com",
+              "passwords": [
+                "ValidPassword123!",
+                "AnotherValidPassword456!"
+              ]
+            },
+            "expectedOutcome": {
+              "successMessage": "Login successful! Welcome back!",
+              "redirectUrl": "/dashboard",
+              "elementsVisible": [
+                "user profile",
+                "logout button"
+              ]
+            }
+          },
+          "recommendations": [
+            "alternative-path",
+            "authentication"
+          ],
+          "_inspection": {
+            "url": "https://cirro.io/users/sign_in",
+            "timestamp": 1776086374521,
+            "realInspection": false
+          },
+          "_journeySteps": 8,
+          "_scenarioOriginal": {
+            "scenarioId": "POS-003",
+            "title": "Successful login with password input variations",
+            "description": "User logs in with the same email but different valid password variations",
+            "type": "positive",
+            "priority": "medium",
+            "steps": [
+              {
+                "stepNumber": 1,
+                "action": "navigate",
+                "url": "https://example.com/login"
+              },
+              {
+                "stepNumber": 2,
+                "action": "fill",
+                "field": "user[email]",
+                "value": "admin@gmail.com",
+                "locatorStrategy": "getByXPath"
+              },
+              {
+                "stepNumber": 3,
+                "action": "fill",
+                "field": "user[password]",
+                "value": "ValidPassword123!",
+                "locatorStrategy": "getByXPath"
+              },
+              {
+                "stepNumber": 4,
+                "action": "click",
+                "element": "Submit button",
+                "locatorStrategy": "getByXPath"
+              },
+              {
+                "stepNumber": 5,
+                "action": "navigate",
+                "url": "https://example.com/login"
+              },
+              {
+                "stepNumber": 6,
+                "action": "fill",
+                "field": "user[email]",
+                "value": "admin@gmail.com",
+                "locatorStrategy": "getByXPath"
+              },
+              {
+                "stepNumber": 7,
+                "action": "fill",
+                "field": "user[password]",
+                "value": "AnotherValidPassword456!",
+                "locatorStrategy": "getByXPath"
+              },
+              {
+                "stepNumber": 8,
+                "action": "click",
+                "element": "Submit button",
+                "locatorStrategy": "getByXPath"
+              }
+            ],
+            "expectedOutcome": {
+              "successMessage": "Login successful! Welcome back!",
+              "redirectUrl": "/dashboard",
+              "elementsVisible": [
+                "user profile",
+                "logout button"
+              ]
+            },
+            "testData": {
+              "email": "admin@gmail.com",
+              "passwords": [
+                "ValidPassword123!",
+                "AnotherValidPassword456!"
+              ]
+            },
+            "tags": [
+              "alternative-path",
+              "authentication"
+            ]
+          }
+        },
+        {
+          "scenarioId": "POS-004",
+          "testType": "e2e",
+          "pageTitle": "Test Page",
+          "summary": "Successful login with various valid email formats",
+          "description": "User logs in with different valid email formats and the same password",
+          "journeySteps": [
+            {
+              "step": 1,
+              "action": "navigate",
+              "description": "navigate ",
+              "locatorStrategy": "auto"
+            },
+            {
+              "step": 2,
+              "action": "fill",
+              "element": "user[email]",
+              "value": "user@example.com",
+              "description": "fill user[email]",
+              "locatorStrategy": "getByXPath"
+            },
+            {
+              "step": 3,
+              "action": "fill",
+              "element": "user[password]",
+              "value": "ValidPassword123!",
+              "description": "fill user[password]",
+              "locatorStrategy": "getByXPath"
+            },
+            {
+              "step": 4,
+              "action": "click",
+              "element": "Submit button",
+              "description": "click Submit button",
+              "locatorStrategy": "getByXPath"
+            },
+            {
+              "step": 5,
+              "action": "navigate",
+              "description": "navigate ",
+              "locatorStrategy": "auto"
+            },
+            {
+              "step": 6,
+              "action": "fill",
+              "element": "user[email]",
+              "value": "user.name@example.com",
+              "description": "fill user[email]",
+              "locatorStrategy": "getByXPath"
+            },
+            {
+              "step": 7,
+              "action": "fill",
+              "element": "user[password]",
+              "value": "ValidPassword123!",
+              "description": "fill user[password]",
+              "locatorStrategy": "getByXPath"
+            },
+            {
+              "step": 8,
+              "action": "click",
+              "element": "Submit button",
+              "description": "click Submit button",
+              "locatorStrategy": "getByXPath"
+            }
+          ],
+          "pageElements": [
+            {
+              "name": "user[email]",
+              "locatorStrategy": "getByXPath",
+              "locatorValue": "user[email]",
+              "description": "Element for fill"
+            },
+            {
+              "name": "user[password]",
+              "locatorStrategy": "getByXPath",
+              "locatorValue": "user[password]",
+              "description": "Element for fill"
+            },
+            {
+              "name": "Submit button",
+              "locatorStrategy": "getByXPath",
+              "locatorValue": "Submit button",
+              "description": "Element for click"
+            }
+          ],
+          "assertions": [
+            {
+              "type": "visible",
+              "element": "success message",
+              "expectedValue": "Login successful! Welcome back!"
+            },
+            {
+              "type": "url",
+              "expectedValue": "/dashboard"
+            }
+          ],
+          "testDataSets": {
+            "main": {
+              "emails": [
+                "user@example.com",
+                "user.name@example.com"
+              ],
+              "password": "ValidPassword123!"
+            },
+            "expectedOutcome": {
+              "successMessage": "Login successful! Welcome back!",
+              "redirectUrl": "/dashboard",
+              "elementsVisible": [
+                "user profile",
+                "logout button"
+              ]
+            }
+          },
+          "recommendations": [
+            "alternative-path",
+            "authentication"
+          ],
+          "_inspection": {
+            "url": "https://cirro.io/users/sign_in",
+            "timestamp": 1776086374521,
+            "realInspection": false
+          },
+          "_journeySteps": 8,
+          "_scenarioOriginal": {
+            "scenarioId": "POS-004",
+            "title": "Successful login with various valid email formats",
+            "description": "User logs in with different valid email formats and the same password",
+            "type": "positive",
+            "priority": "medium",
+            "steps": [
+              {
+                "stepNumber": 1,
+                "action": "navigate",
+                "url": "https://example.com/login"
+              },
+              {
+                "stepNumber": 2,
+                "action": "fill",
+                "field": "user[email]",
+                "value": "user@example.com",
+                "locatorStrategy": "getByXPath"
+              },
+              {
+                "stepNumber": 3,
+                "action": "fill",
+                "field": "user[password]",
+                "value": "ValidPassword123!",
+                "locatorStrategy": "getByXPath"
+              },
+              {
+                "stepNumber": 4,
+                "action": "click",
+                "element": "Submit button",
+                "locatorStrategy": "getByXPath"
+              },
+              {
+                "stepNumber": 5,
+                "action": "navigate",
+                "url": "https://example.com/login"
+              },
+              {
+                "stepNumber": 6,
+                "action": "fill",
+                "field": "user[email]",
+                "value": "user.name@example.com",
+                "locatorStrategy": "getByXPath"
+              },
+              {
+                "stepNumber": 7,
+                "action": "fill",
+                "field": "user[password]",
+                "value": "ValidPassword123!",
+                "locatorStrategy": "getByXPath"
+              },
+              {
+                "stepNumber": 8,
+                "action": "click",
+                "element": "Submit button",
+                "locatorStrategy": "getByXPath"
+              }
+            ],
+            "expectedOutcome": {
+              "successMessage": "Login successful! Welcome back!",
+              "redirectUrl": "/dashboard",
+              "elementsVisible": [
+                "user profile",
+                "logout button"
+              ]
+            },
+            "testData": {
+              "emails": [
+                "user@example.com",
+                "user.name@example.com"
+              ],
+              "password": "ValidPassword123!"
+            },
+            "tags": [
+              "alternative-path",
+              "authentication"
+            ]
+          }
+        },
+        {
+          "scenarioId": "POS-005",
+          "testType": "e2e",
+          "pageTitle": "Test Page",
+          "summary": "Successful login verification with success message",
+          "description": "User logs in and verifies the success message and redirection",
+          "journeySteps": [
+            {
+              "step": 1,
+              "action": "navigate",
+              "description": "navigate ",
+              "locatorStrategy": "auto"
+            },
+            {
+              "step": 2,
+              "action": "fill",
+              "element": "user[email]",
+              "value": "admin@gmail.com",
+              "description": "fill user[email]",
+              "locatorStrategy": "getByXPath"
+            },
+            {
+              "step": 3,
+              "action": "fill",
+              "element": "user[password]",
+              "value": "ValidPassword123!",
+              "description": "fill user[password]",
+              "locatorStrategy": "getByXPath"
+            },
+            {
+              "step": 4,
+              "action": "click",
+              "element": "Submit button",
+              "description": "click Submit button",
+              "locatorStrategy": "getByXPath"
+            },
+            {
+              "step": 5,
+              "action": "waitForElement",
+              "element": "success message",
+              "description": "waitForElement success message",
+              "locatorStrategy": "getByXPath"
+            }
+          ],
+          "pageElements": [
+            {
+              "name": "user[email]",
+              "locatorStrategy": "getByXPath",
+              "locatorValue": "user[email]",
+              "description": "Element for fill"
+            },
+            {
+              "name": "user[password]",
+              "locatorStrategy": "getByXPath",
+              "locatorValue": "user[password]",
+              "description": "Element for fill"
+            },
+            {
+              "name": "Submit button",
+              "locatorStrategy": "getByXPath",
+              "locatorValue": "Submit button",
+              "description": "Element for click"
+            },
+            {
+              "name": "success message",
+              "locatorStrategy": "getByXPath",
+              "locatorValue": "success message",
+              "description": "Element for waitForElement"
+            }
+          ],
+          "assertions": [
+            {
+              "type": "visible",
+              "element": "success message",
+              "expectedValue": "Login successful! Welcome back!"
+            },
+            {
+              "type": "url",
+              "expectedValue": "/dashboard"
+            }
+          ],
+          "testDataSets": {
+            "main": {
+              "email": "admin@gmail.com",
+              "password": "ValidPassword123!"
+            },
+            "expectedOutcome": {
+              "successMessage": "Login successful! Welcome back!",
+              "redirectUrl": "/dashboard",
+              "elementsVisible": [
+                "user profile",
+                "logout button"
+              ]
+            }
+          },
+          "recommendations": [
+            "verification",
+            "authentication"
+          ],
+          "_inspection": {
+            "url": "https://cirro.io/users/sign_in",
+            "timestamp": 1776086374521,
+            "realInspection": false
+          },
+          "_journeySteps": 5,
+          "_scenarioOriginal": {
+            "scenarioId": "POS-005",
+            "title": "Successful login verification with success message",
+            "description": "User logs in and verifies the success message and redirection",
+            "type": "positive",
+            "priority": "high",
+            "steps": [
+              {
+                "stepNumber": 1,
+                "action": "navigate",
+                "url": "https://example.com/login"
+              },
+              {
+                "stepNumber": 2,
+                "action": "fill",
+                "field": "user[email]",
+                "value": "admin@gmail.com",
+                "locatorStrategy": "getByXPath"
+              },
+              {
+                "stepNumber": 3,
+                "action": "fill",
+                "field": "user[password]",
+                "value": "ValidPassword123!",
+                "locatorStrategy": "getByXPath"
+              },
+              {
+                "stepNumber": 4,
+                "action": "click",
+                "element": "Submit button",
+                "locatorStrategy": "getByXPath"
+              },
+              {
+                "stepNumber": 5,
+                "action": "waitForElement",
+                "element": "success message",
+                "locatorStrategy": "getByXPath"
+              }
+            ],
+            "expectedOutcome": {
+              "successMessage": "Login successful! Welcome back!",
+              "redirectUrl": "/dashboard",
+              "elementsVisible": [
+                "user profile",
+                "logout button"
+              ]
+            },
+            "testData": {
+              "email": "admin@gmail.com",
+              "password": "ValidPassword123!"
+            },
+            "tags": [
+              "verification",
+              "authentication"
+            ]
+          }
+        }
+      ],
+      "negative": [
+        {
+          "scenarioId": "NEG-001",
+          "testType": "negative",
+          "pageTitle": "Test Page",
+          "summary": "Login fails with invalid email format",
+          "description": "User attempts login with improperly formatted email",
+          "journeySteps": [
+            {
+              "step": 1,
+              "action": "navigate",
+              "description": "navigate ",
+              "locatorStrategy": "auto"
+            },
+            {
+              "step": 2,
+              "action": "fill",
+              "element": "user[email]",
+              "value": "invalidemail@",
+              "description": "fill user[email]",
+              "locatorStrategy": "getByLabel"
+            },
+            {
+              "step": 3,
+              "action": "fill",
+              "element": "user[password]",
+              "value": "ValidPass123!",
+              "description": "fill user[password]",
+              "locatorStrategy": "getByLabel"
+            },
+            {
+              "step": 4,
+              "action": "click",
+              "element": "Login button",
+              "description": "click Login button",
+              "locatorStrategy": "getByRole"
+            }
+          ],
+          "pageElements": [
+            {
+              "name": "user[email]",
+              "locatorStrategy": "getByLabel",
+              "locatorValue": "user[email]",
+              "description": "Element for fill"
+            },
+            {
+              "name": "user[password]",
+              "locatorStrategy": "getByLabel",
+              "locatorValue": "user[password]",
+              "description": "Element for fill"
+            },
+            {
+              "name": "Login button",
+              "locatorStrategy": "getByRole",
+              "locatorValue": "Login button",
+              "description": "Element for click"
+            }
+          ],
+          "assertions": [
+            {
+              "type": "visible",
+              "element": "error message",
+              "expectedValue": "Please enter a valid email address"
+            }
+          ],
+          "testDataSets": {
+            "main": {
+              "email": "invalidemail@",
+              "password": "ValidPass123!"
+            },
+            "expectedOutcome": {
+              "errorMessage": "Please enter a valid email address",
+              "fieldHighlighted": "user[email]",
+              "submitBlocked": true
+            }
+          },
+          "recommendations": [
+            "validation",
+            "email-format"
+          ],
+          "_inspection": {
+            "url": "https://cirro.io/users/sign_in",
+            "timestamp": 1776086374521,
+            "realInspection": false
+          },
+          "_journeySteps": 4,
+          "_scenarioOriginal": {
+            "scenarioId": "NEG-001",
+            "title": "Login fails with invalid email format",
+            "description": "User attempts login with improperly formatted email",
+            "type": "negative",
+            "priority": "high",
+            "category": "validation",
+            "steps": [
+              {
+                "stepNumber": 1,
+                "action": "navigate",
+                "url": "https://example.com/login"
+              },
+              {
+                "stepNumber": 2,
+                "action": "fill",
+                "field": "user[email]",
+                "value": "invalidemail@",
+                "locatorStrategy": "getByLabel"
+              },
+              {
+                "stepNumber": 3,
+                "action": "fill",
+                "field": "user[password]",
+                "value": "ValidPass123!",
+                "locatorStrategy": "getByLabel"
+              },
+              {
+                "stepNumber": 4,
+                "action": "click",
+                "element": "Login button",
+                "locatorStrategy": "getByRole"
+              }
+            ],
+            "expectedOutcome": {
+              "errorMessage": "Please enter a valid email address",
+              "fieldHighlighted": "user[email]",
+              "submitBlocked": true
+            },
+            "testData": {
+              "email": "invalidemail@",
+              "password": "ValidPass123!"
+            },
+            "tags": [
+              "validation",
+              "email-format"
+            ],
+            "securityRelevance": "low"
+          }
+        },
+        {
+          "scenarioId": "NEG-002",
+          "testType": "negative",
+          "pageTitle": "Test Page",
+          "summary": "Login fails with missing email field",
+          "description": "User attempts to login without providing an email address",
+          "journeySteps": [
+            {
+              "step": 1,
+              "action": "navigate",
+              "description": "navigate ",
+              "locatorStrategy": "auto"
+            },
+            {
+              "step": 2,
+              "action": "fill",
+              "element": "user[password]",
+              "value": "ValidPass123!",
+              "description": "fill user[password]",
+              "locatorStrategy": "getByLabel"
+            },
+            {
+              "step": 3,
+              "action": "click",
+              "element": "Login button",
+              "description": "click Login button",
+              "locatorStrategy": "getByRole"
+            }
+          ],
+          "pageElements": [
+            {
+              "name": "user[password]",
+              "locatorStrategy": "getByLabel",
+              "locatorValue": "user[password]",
+              "description": "Element for fill"
+            },
+            {
+              "name": "Login button",
+              "locatorStrategy": "getByRole",
+              "locatorValue": "Login button",
+              "description": "Element for click"
+            }
+          ],
+          "assertions": [
+            {
+              "type": "visible",
+              "element": "error message",
+              "expectedValue": "Email field is required"
+            }
+          ],
+          "testDataSets": {
+            "main": {
+              "email": "",
+              "password": "ValidPass123!"
+            },
+            "expectedOutcome": {
+              "errorMessage": "Email field is required",
+              "fieldHighlighted": "user[email]",
+              "submitBlocked": true
+            }
+          },
+          "recommendations": [
+            "validation",
+            "required-fields"
+          ],
+          "_inspection": {
+            "url": "https://cirro.io/users/sign_in",
+            "timestamp": 1776086374521,
+            "realInspection": false
+          },
+          "_journeySteps": 3,
+          "_scenarioOriginal": {
+            "scenarioId": "NEG-002",
+            "title": "Login fails with missing email field",
+            "description": "User attempts to login without providing an email address",
+            "type": "negative",
+            "priority": "high",
+            "category": "validation",
+            "steps": [
+              {
+                "stepNumber": 1,
+                "action": "navigate",
+                "url": "https://example.com/login"
+              },
+              {
+                "stepNumber": 2,
+                "action": "fill",
+                "field": "user[password]",
+                "value": "ValidPass123!",
+                "locatorStrategy": "getByLabel"
+              },
+              {
+                "stepNumber": 3,
+                "action": "click",
+                "element": "Login button",
+                "locatorStrategy": "getByRole"
+              }
+            ],
+            "expectedOutcome": {
+              "errorMessage": "Email field is required",
+              "fieldHighlighted": "user[email]",
+              "submitBlocked": true
+            },
+            "testData": {
+              "email": "",
+              "password": "ValidPass123!"
+            },
+            "tags": [
+              "validation",
+              "required-fields"
+            ],
+            "securityRelevance": "low"
+          }
+        },
+        {
+          "scenarioId": "NEG-003",
+          "testType": "negative",
+          "pageTitle": "Test Page",
+          "summary": "Login fails with too short password",
+          "description": "User tries to login with a password that is too short",
+          "journeySteps": [
+            {
+              "step": 1,
+              "action": "navigate",
+              "description": "navigate ",
+              "locatorStrategy": "auto"
+            },
+            {
+              "step": 2,
+              "action": "fill",
+              "element": "user[email]",
+              "value": "user@example.com",
+              "description": "fill user[email]",
+              "locatorStrategy": "getByLabel"
+            },
+            {
+              "step": 3,
+              "action": "fill",
+              "element": "user[password]",
+              "value": "123",
+              "description": "fill user[password]",
+              "locatorStrategy": "getByLabel"
+            },
+            {
+              "step": 4,
+              "action": "click",
+              "element": "Login button",
+              "description": "click Login button",
+              "locatorStrategy": "getByRole"
+            }
+          ],
+          "pageElements": [
+            {
+              "name": "user[email]",
+              "locatorStrategy": "getByLabel",
+              "locatorValue": "user[email]",
+              "description": "Element for fill"
+            },
+            {
+              "name": "user[password]",
+              "locatorStrategy": "getByLabel",
+              "locatorValue": "user[password]",
+              "description": "Element for fill"
+            },
+            {
+              "name": "Login button",
+              "locatorStrategy": "getByRole",
+              "locatorValue": "Login button",
+              "description": "Element for click"
+            }
+          ],
+          "assertions": [
+            {
+              "type": "visible",
+              "element": "error message",
+              "expectedValue": "Password must be at least 6 characters long"
+            }
+          ],
+          "testDataSets": {
+            "main": {
+              "email": "user@example.com",
+              "password": "123"
+            },
+            "expectedOutcome": {
+              "errorMessage": "Password must be at least 6 characters long",
+              "fieldHighlighted": "user[password]",
+              "submitBlocked": true
+            }
+          },
+          "recommendations": [
+            "validation",
+            "password-length"
+          ],
+          "_inspection": {
+            "url": "https://cirro.io/users/sign_in",
+            "timestamp": 1776086374521,
+            "realInspection": false
+          },
+          "_journeySteps": 4,
+          "_scenarioOriginal": {
+            "scenarioId": "NEG-003",
+            "title": "Login fails with too short password",
+            "description": "User tries to login with a password that is too short",
+            "type": "negative",
+            "priority": "high",
+            "category": "validation",
+            "steps": [
+              {
+                "stepNumber": 1,
+                "action": "navigate",
+                "url": "https://example.com/login"
+              },
+              {
+                "stepNumber": 2,
+                "action": "fill",
+                "field": "user[email]",
+                "value": "user@example.com",
+                "locatorStrategy": "getByLabel"
+              },
+              {
+                "stepNumber": 3,
+                "action": "fill",
+                "field": "user[password]",
+                "value": "123",
+                "locatorStrategy": "getByLabel"
+              },
+              {
+                "stepNumber": 4,
+                "action": "click",
+                "element": "Login button",
+                "locatorStrategy": "getByRole"
+              }
+            ],
+            "expectedOutcome": {
+              "errorMessage": "Password must be at least 6 characters long",
+              "fieldHighlighted": "user[password]",
+              "submitBlocked": true
+            },
+            "testData": {
+              "email": "user@example.com",
+              "password": "123"
+            },
+            "tags": [
+              "validation",
+              "password-length"
+            ],
+            "securityRelevance": "low"
+          }
+        },
+        {
+          "scenarioId": "NEG-004",
+          "testType": "negative",
+          "pageTitle": "Test Page",
+          "summary": "Login fails with SQL Injection in email field",
+          "description": "User attempts login with SQL injection in email field",
+          "journeySteps": [
+            {
+              "step": 1,
+              "action": "navigate",
+              "description": "navigate ",
+              "locatorStrategy": "auto"
+            },
+            {
+              "step": 2,
+              "action": "fill",
+              "element": "user[email]",
+              "value": "' OR '1'='1",
+              "description": "fill user[email]",
+              "locatorStrategy": "getByLabel"
+            },
+            {
+              "step": 3,
+              "action": "fill",
+              "element": "user[password]",
+              "value": "ValidPass123!",
+              "description": "fill user[password]",
+              "locatorStrategy": "getByLabel"
+            },
+            {
+              "step": 4,
+              "action": "click",
+              "element": "Login button",
+              "description": "click Login button",
+              "locatorStrategy": "getByRole"
+            }
+          ],
+          "pageElements": [
+            {
+              "name": "user[email]",
+              "locatorStrategy": "getByLabel",
+              "locatorValue": "user[email]",
+              "description": "Element for fill"
+            },
+            {
+              "name": "user[password]",
+              "locatorStrategy": "getByLabel",
+              "locatorValue": "user[password]",
+              "description": "Element for fill"
+            },
+            {
+              "name": "Login button",
+              "locatorStrategy": "getByRole",
+              "locatorValue": "Login button",
+              "description": "Element for click"
+            }
+          ],
+          "assertions": [
+            {
+              "type": "visible",
+              "element": "error message",
+              "expectedValue": "Invalid email or password"
+            }
+          ],
+          "testDataSets": {
+            "main": {
+              "email": "' OR '1'='1",
+              "password": "ValidPass123!"
+            },
+            "expectedOutcome": {
+              "errorMessage": "Invalid email or password",
+              "fieldHighlighted": null,
+              "submitBlocked": false
+            }
+          },
+          "recommendations": [
+            "security",
+            "sql-injection"
+          ],
+          "_inspection": {
+            "url": "https://cirro.io/users/sign_in",
+            "timestamp": 1776086374521,
+            "realInspection": false
+          },
+          "_journeySteps": 4,
+          "_scenarioOriginal": {
+            "scenarioId": "NEG-004",
+            "title": "Login fails with SQL Injection in email field",
+            "description": "User attempts login with SQL injection in email field",
+            "type": "negative",
+            "priority": "critical",
+            "category": "security",
+            "steps": [
+              {
+                "stepNumber": 1,
+                "action": "navigate",
+                "url": "https://example.com/login"
+              },
+              {
+                "stepNumber": 2,
+                "action": "fill",
+                "field": "user[email]",
+                "value": "' OR '1'='1",
+                "locatorStrategy": "getByLabel"
+              },
+              {
+                "stepNumber": 3,
+                "action": "fill",
+                "field": "user[password]",
+                "value": "ValidPass123!",
+                "locatorStrategy": "getByLabel"
+              },
+              {
+                "stepNumber": 4,
+                "action": "click",
+                "element": "Login button",
+                "locatorStrategy": "getByRole"
+              }
+            ],
+            "expectedOutcome": {
+              "errorMessage": "Invalid email or password",
+              "fieldHighlighted": null,
+              "submitBlocked": false
+            },
+            "testData": {
+              "email": "' OR '1'='1",
+              "password": "ValidPass123!"
+            },
+            "tags": [
+              "security",
+              "sql-injection"
+            ],
+            "securityRelevance": "high"
+          }
+        },
+        {
+          "scenarioId": "NEG-005",
+          "testType": "negative",
+          "pageTitle": "Test Page",
+          "summary": "Login fails with XSS attempt in email field",
+          "description": "User tries to log in with XSS attempt in email field",
+          "journeySteps": [
+            {
+              "step": 1,
+              "action": "navigate",
+              "description": "navigate ",
+              "locatorStrategy": "auto"
+            },
+            {
+              "step": 2,
+              "action": "fill",
+              "element": "user[email]",
+              "value": "<script>alert('XSS')</script>",
+              "description": "fill user[email]",
+              "locatorStrategy": "getByLabel"
+            },
+            {
+              "step": 3,
+              "action": "fill",
+              "element": "user[password]",
+              "value": "ValidPass123!",
+              "description": "fill user[password]",
+              "locatorStrategy": "getByLabel"
+            },
+            {
+              "step": 4,
+              "action": "click",
+              "element": "Login button",
+              "description": "click Login button",
+              "locatorStrategy": "getByRole"
+            }
+          ],
+          "pageElements": [
+            {
+              "name": "user[email]",
+              "locatorStrategy": "getByLabel",
+              "locatorValue": "user[email]",
+              "description": "Element for fill"
+            },
+            {
+              "name": "user[password]",
+              "locatorStrategy": "getByLabel",
+              "locatorValue": "user[password]",
+              "description": "Element for fill"
+            },
+            {
+              "name": "Login button",
+              "locatorStrategy": "getByRole",
+              "locatorValue": "Login button",
+              "description": "Element for click"
+            }
+          ],
+          "assertions": [
+            {
+              "type": "visible",
+              "element": "error message",
+              "expectedValue": "Invalid email or password"
+            }
+          ],
+          "testDataSets": {
+            "main": {
+              "email": "<script>alert('XSS')</script>",
+              "password": "ValidPass123!"
+            },
+            "expectedOutcome": {
+              "errorMessage": "Invalid email or password",
+              "fieldHighlighted": null,
+              "submitBlocked": false
+            }
+          },
+          "recommendations": [
+            "security",
+            "xss"
+          ],
+          "_inspection": {
+            "url": "https://cirro.io/users/sign_in",
+            "timestamp": 1776086374521,
+            "realInspection": false
+          },
+          "_journeySteps": 4,
+          "_scenarioOriginal": {
+            "scenarioId": "NEG-005",
+            "title": "Login fails with XSS attempt in email field",
+            "description": "User tries to log in with XSS attempt in email field",
+            "type": "negative",
+            "priority": "critical",
+            "category": "security",
+            "steps": [
+              {
+                "stepNumber": 1,
+                "action": "navigate",
+                "url": "https://example.com/login"
+              },
+              {
+                "stepNumber": 2,
+                "action": "fill",
+                "field": "user[email]",
+                "value": "<script>alert('XSS')</script>",
+                "locatorStrategy": "getByLabel"
+              },
+              {
+                "stepNumber": 3,
+                "action": "fill",
+                "field": "user[password]",
+                "value": "ValidPass123!",
+                "locatorStrategy": "getByLabel"
+              },
+              {
+                "stepNumber": 4,
+                "action": "click",
+                "element": "Login button",
+                "locatorStrategy": "getByRole"
+              }
+            ],
+            "expectedOutcome": {
+              "errorMessage": "Invalid email or password",
+              "fieldHighlighted": null,
+              "submitBlocked": false
+            },
+            "testData": {
+              "email": "<script>alert('XSS')</script>",
+              "password": "ValidPass123!"
+            },
+            "tags": [
+              "security",
+              "xss"
+            ],
+            "securityRelevance": "high"
+          }
+        },
+        {
+          "scenarioId": "NEG-006",
+          "testType": "negative",
+          "pageTitle": "Test Page",
+          "summary": "Login fails with expired session",
+          "description": "User attempts to login after session has expired",
+          "journeySteps": [
+            {
+              "step": 1,
+              "action": "navigate",
+              "description": "navigate ",
+              "locatorStrategy": "auto"
+            },
+            {
+              "step": 2,
+              "action": "fill",
+              "element": "user[email]",
+              "value": "user@example.com",
+              "description": "fill user[email]",
+              "locatorStrategy": "getByLabel"
+            },
+            {
+              "step": 3,
+              "action": "fill",
+              "element": "user[password]",
+              "value": "ValidPass123!",
+              "description": "fill user[password]",
+              "locatorStrategy": "getByLabel"
+            },
+            {
+              "step": 4,
+              "action": "click",
+              "element": "Login button",
+              "description": "click Login button",
+              "locatorStrategy": "getByRole"
+            }
+          ],
+          "pageElements": [
+            {
+              "name": "user[email]",
+              "locatorStrategy": "getByLabel",
+              "locatorValue": "user[email]",
+              "description": "Element for fill"
+            },
+            {
+              "name": "user[password]",
+              "locatorStrategy": "getByLabel",
+              "locatorValue": "user[password]",
+              "description": "Element for fill"
+            },
+            {
+              "name": "Login button",
+              "locatorStrategy": "getByRole",
+              "locatorValue": "Login button",
+              "description": "Element for click"
+            }
+          ],
+          "assertions": [
+            {
+              "type": "visible",
+              "element": "error message",
+              "expectedValue": "Your session has expired. Please log in again."
+            }
+          ],
+          "testDataSets": {
+            "main": {
+              "email": "user@example.com",
+              "password": "ValidPass123!"
+            },
+            "expectedOutcome": {
+              "errorMessage": "Your session has expired. Please log in again.",
+              "fieldHighlighted": null,
+              "submitBlocked": true
+            }
+          },
+          "recommendations": [
+            "session",
+            "expired"
+          ],
+          "_inspection": {
+            "url": "https://cirro.io/users/sign_in",
+            "timestamp": 1776086374521,
+            "realInspection": false
+          },
+          "_journeySteps": 4,
+          "_scenarioOriginal": {
+            "scenarioId": "NEG-006",
+            "title": "Login fails with expired session",
+            "description": "User attempts to login after session has expired",
+            "type": "negative",
+            "priority": "medium",
+            "category": "session",
+            "steps": [
+              {
+                "stepNumber": 1,
+                "action": "navigate",
+                "url": "https://example.com/login"
+              },
+              {
+                "stepNumber": 2,
+                "action": "fill",
+                "field": "user[email]",
+                "value": "user@example.com",
+                "locatorStrategy": "getByLabel"
+              },
+              {
+                "stepNumber": 3,
+                "action": "fill",
+                "field": "user[password]",
+                "value": "ValidPass123!",
+                "locatorStrategy": "getByLabel"
+              },
+              {
+                "stepNumber": 4,
+                "action": "click",
+                "element": "Login button",
+                "locatorStrategy": "getByRole"
+              }
+            ],
+            "expectedOutcome": {
+              "errorMessage": "Your session has expired. Please log in again.",
+              "fieldHighlighted": null,
+              "submitBlocked": true
+            },
+            "testData": {
+              "email": "user@example.com",
+              "password": "ValidPass123!"
+            },
+            "tags": [
+              "session",
+              "expired"
+            ],
+            "securityRelevance": "medium"
+          }
+        },
+        {
+          "scenarioId": "NEG-007",
+          "testType": "negative",
+          "pageTitle": "Test Page",
+          "summary": "Login fails with permission denied",
+          "description": "User attempts to access restricted area without proper permissions",
+          "journeySteps": [
+            {
+              "step": 1,
+              "action": "navigate",
+              "description": "navigate ",
+              "locatorStrategy": "auto"
+            }
+          ],
+          "pageElements": [],
+          "assertions": [
+            {
+              "type": "visible",
+              "element": "error message",
+              "expectedValue": "You do not have permission to access this page."
+            }
+          ],
+          "testDataSets": {
+            "main": {},
+            "expectedOutcome": {
+              "errorMessage": "You do not have permission to access this page.",
+              "fieldHighlighted": null,
+              "submitBlocked": true
+            }
+          },
+          "recommendations": [
+            "access",
+            "permission-denied"
+          ],
+          "_inspection": {
+            "url": "https://cirro.io/users/sign_in",
+            "timestamp": 1776086374521,
+            "realInspection": false
+          },
+          "_journeySteps": 1,
+          "_scenarioOriginal": {
+            "scenarioId": "NEG-007",
+            "title": "Login fails with permission denied",
+            "description": "User attempts to access restricted area without proper permissions",
+            "type": "negative",
+            "priority": "medium",
+            "category": "access",
+            "steps": [
+              {
+                "stepNumber": 1,
+                "action": "navigate",
+                "url": "https://example.com/restricted"
+              }
+            ],
+            "expectedOutcome": {
+              "errorMessage": "You do not have permission to access this page.",
+              "fieldHighlighted": null,
+              "submitBlocked": true
+            },
+            "testData": {},
+            "tags": [
+              "access",
+              "permission-denied"
+            ],
+            "securityRelevance": "medium"
+          }
+        },
+        {
+          "scenarioId": "NEG-008",
+          "testType": "negative",
+          "pageTitle": "Test Page",
+          "summary": "Login fails with network failure",
+          "description": "User attempts to login but network connection fails",
+          "journeySteps": [
+            {
+              "step": 1,
+              "action": "navigate",
+              "description": "navigate ",
+              "locatorStrategy": "auto"
+            },
+            {
+              "step": 2,
+              "action": "fill",
+              "element": "user[email]",
+              "value": "user@example.com",
+              "description": "fill user[email]",
+              "locatorStrategy": "getByLabel"
+            },
+            {
+              "step": 3,
+              "action": "fill",
+              "element": "user[password]",
+              "value": "ValidPass123!",
+              "description": "fill user[password]",
+              "locatorStrategy": "getByLabel"
+            },
+            {
+              "step": 4,
+              "action": "click",
+              "element": "Login button",
+              "description": "click Login button",
+              "locatorStrategy": "getByRole"
+            }
+          ],
+          "pageElements": [
+            {
+              "name": "user[email]",
+              "locatorStrategy": "getByLabel",
+              "locatorValue": "user[email]",
+              "description": "Element for fill"
+            },
+            {
+              "name": "user[password]",
+              "locatorStrategy": "getByLabel",
+              "locatorValue": "user[password]",
+              "description": "Element for fill"
+            },
+            {
+              "name": "Login button",
+              "locatorStrategy": "getByRole",
+              "locatorValue": "Login button",
+              "description": "Element for click"
+            }
+          ],
+          "assertions": [
+            {
+              "type": "visible",
+              "element": "error message",
+              "expectedValue": "Network error. Please try again later."
+            }
+          ],
+          "testDataSets": {
+            "main": {
+              "email": "user@example.com",
+              "password": "ValidPass123!"
+            },
+            "expectedOutcome": {
+              "errorMessage": "Network error. Please try again later.",
+              "fieldHighlighted": null,
+              "submitBlocked": true
+            }
+          },
+          "recommendations": [
+            "network",
+            "failure"
+          ],
+          "_inspection": {
+            "url": "https://cirro.io/users/sign_in",
+            "timestamp": 1776086374521,
+            "realInspection": false
+          },
+          "_journeySteps": 4,
+          "_scenarioOriginal": {
+            "scenarioId": "NEG-008",
+            "title": "Login fails with network failure",
+            "description": "User attempts to login but network connection fails",
+            "type": "negative",
+            "priority": "high",
+            "category": "network",
+            "steps": [
+              {
+                "stepNumber": 1,
+                "action": "navigate",
+                "url": "https://example.com/login"
+              },
+              {
+                "stepNumber": 2,
+                "action": "fill",
+                "field": "user[email]",
+                "value": "user@example.com",
+                "locatorStrategy": "getByLabel"
+              },
+              {
+                "stepNumber": 3,
+                "action": "fill",
+                "field": "user[password]",
+                "value": "ValidPass123!",
+                "locatorStrategy": "getByLabel"
+              },
+              {
+                "stepNumber": 4,
+                "action": "click",
+                "element": "Login button",
+                "locatorStrategy": "getByRole"
+              }
+            ],
+            "expectedOutcome": {
+              "errorMessage": "Network error. Please try again later.",
+              "fieldHighlighted": null,
+              "submitBlocked": true
+            },
+            "testData": {
+              "email": "user@example.com",
+              "password": "ValidPass123!"
+            },
+            "tags": [
+              "network",
+              "failure"
+            ],
+            "securityRelevance": "medium"
+          }
+        },
+        {
+          "scenarioId": "NEG-009",
+          "testType": "negative",
+          "pageTitle": "Test Page",
+          "summary": "Login fails with empty submission",
+          "description": "User submits the login form without filling in any fields",
+          "journeySteps": [
+            {
+              "step": 1,
+              "action": "navigate",
+              "description": "navigate ",
+              "locatorStrategy": "auto"
+            },
+            {
+              "step": 2,
+              "action": "click",
+              "element": "Login button",
+              "description": "click Login button",
+              "locatorStrategy": "getByRole"
+            }
+          ],
+          "pageElements": [
+            {
+              "name": "Login button",
+              "locatorStrategy": "getByRole",
+              "locatorValue": "Login button",
+              "description": "Element for click"
+            }
+          ],
+          "assertions": [
+            {
+              "type": "visible",
+              "element": "error message",
+              "expectedValue": "Please fill in all required fields."
+            }
+          ],
+          "testDataSets": {
+            "main": {},
+            "expectedOutcome": {
+              "errorMessage": "Please fill in all required fields.",
+              "fieldHighlighted": null,
+              "submitBlocked": true
+            }
+          },
+          "recommendations": [
+            "validation",
+            "empty"
+          ],
+          "_inspection": {
+            "url": "https://cirro.io/users/sign_in",
+            "timestamp": 1776086374521,
+            "realInspection": false
+          },
+          "_journeySteps": 2,
+          "_scenarioOriginal": {
+            "scenarioId": "NEG-009",
+            "title": "Login fails with empty submission",
+            "description": "User submits the login form without filling in any fields",
+            "type": "negative",
+            "priority": "high",
+            "category": "validation",
+            "steps": [
+              {
+                "stepNumber": 1,
+                "action": "navigate",
+                "url": "https://example.com/login"
+              },
+              {
+                "stepNumber": 2,
+                "action": "click",
+                "element": "Login button",
+                "locatorStrategy": "getByRole"
+              }
+            ],
+            "expectedOutcome": {
+              "errorMessage": "Please fill in all required fields.",
+              "fieldHighlighted": null,
+              "submitBlocked": true
+            },
+            "testData": {},
+            "tags": [
+              "validation",
+              "empty"
+            ],
+            "securityRelevance": "low"
+          }
+        },
+        {
+          "scenarioId": "NEG-010",
+          "testType": "negative",
+          "pageTitle": "Test Page",
+          "summary": "Login fails with invalid credentials",
+          "description": "User attempts to log in with incorrect credentials",
+          "journeySteps": [
+            {
+              "step": 1,
+              "action": "navigate",
+              "description": "navigate ",
+              "locatorStrategy": "auto"
+            },
+            {
+              "step": 2,
+              "action": "fill",
+              "element": "user[email]",
+              "value": "user@example.com",
+              "description": "fill user[email]",
+              "locatorStrategy": "getByLabel"
+            },
+            {
+              "step": 3,
+              "action": "fill",
+              "element": "user[password]",
+              "value": "WrongPassword123!",
+              "description": "fill user[password]",
+              "locatorStrategy": "getByLabel"
+            },
+            {
+              "step": 4,
+              "action": "click",
+              "element": "Login button",
+              "description": "click Login button",
+              "locatorStrategy": "getByRole"
+            }
+          ],
+          "pageElements": [
+            {
+              "name": "user[email]",
+              "locatorStrategy": "getByLabel",
+              "locatorValue": "user[email]",
+              "description": "Element for fill"
+            },
+            {
+              "name": "user[password]",
+              "locatorStrategy": "getByLabel",
+              "locatorValue": "user[password]",
+              "description": "Element for fill"
+            },
+            {
+              "name": "Login button",
+              "locatorStrategy": "getByRole",
+              "locatorValue": "Login button",
+              "description": "Element for click"
+            }
+          ],
+          "assertions": [
+            {
+              "type": "visible",
+              "element": "error message",
+              "expectedValue": "Invalid email or password"
+            }
+          ],
+          "testDataSets": {
+            "main": {
+              "email": "user@example.com",
+              "password": "WrongPassword123!"
+            },
+            "expectedOutcome": {
+              "errorMessage": "Invalid email or password",
+              "fieldHighlighted": null,
+              "submitBlocked": false
+            }
+          },
+          "recommendations": [
+            "authentication",
+            "invalid-credentials"
+          ],
+          "_inspection": {
+            "url": "https://cirro.io/users/sign_in",
+            "timestamp": 1776086374521,
+            "realInspection": false
+          },
+          "_journeySteps": 4,
+          "_scenarioOriginal": {
+            "scenarioId": "NEG-010",
+            "title": "Login fails with invalid credentials",
+            "description": "User attempts to log in with incorrect credentials",
+            "type": "negative",
+            "priority": "high",
+            "category": "authentication",
+            "steps": [
+              {
+                "stepNumber": 1,
+                "action": "navigate",
+                "url": "https://example.com/login"
+              },
+              {
+                "stepNumber": 2,
+                "action": "fill",
+                "field": "user[email]",
+                "value": "user@example.com",
+                "locatorStrategy": "getByLabel"
+              },
+              {
+                "stepNumber": 3,
+                "action": "fill",
+                "field": "user[password]",
+                "value": "WrongPassword123!",
+                "locatorStrategy": "getByLabel"
+              },
+              {
+                "stepNumber": 4,
+                "action": "click",
+                "element": "Login button",
+                "locatorStrategy": "getByRole"
+              }
+            ],
+            "expectedOutcome": {
+              "errorMessage": "Invalid email or password",
+              "fieldHighlighted": null,
+              "submitBlocked": false
+            },
+            "testData": {
+              "email": "user@example.com",
+              "password": "WrongPassword123!"
+            },
+            "tags": [
+              "authentication",
+              "invalid-credentials"
+            ],
+            "securityRelevance": "low"
+          }
+        },
+        {
+          "scenarioId": "NEG-011",
+          "testType": "negative",
+          "pageTitle": "Test Page",
+          "summary": "Login fails with concurrent user conflict",
+          "description": "User attempts to log in while another session is active with the same credentials",
+          "journeySteps": [
+            {
+              "step": 1,
+              "action": "navigate",
+              "description": "navigate ",
+              "locatorStrategy": "auto"
+            },
+            {
+              "step": 2,
+              "action": "fill",
+              "element": "user[email]",
+              "value": "user@example.com",
+              "description": "fill user[email]",
+              "locatorStrategy": "getByLabel"
+            },
+            {
+              "step": 3,
+              "action": "fill",
+              "element": "user[password]",
+              "value": "ValidPass123!",
+              "description": "fill user[password]",
+              "locatorStrategy": "getByLabel"
+            },
+            {
+              "step": 4,
+              "action": "click",
+              "element": "Login button",
+              "description": "click Login button",
+              "locatorStrategy": "getByRole"
+            }
+          ],
+          "pageElements": [
+            {
+              "name": "user[email]",
+              "locatorStrategy": "getByLabel",
+              "locatorValue": "user[email]",
+              "description": "Element for fill"
+            },
+            {
+              "name": "user[password]",
+              "locatorStrategy": "getByLabel",
+              "locatorValue": "user[password]",
+              "description": "Element for fill"
+            },
+            {
+              "name": "Login button",
+              "locatorStrategy": "getByRole",
+              "locatorValue": "Login button",
+              "description": "Element for click"
+            }
+          ],
+          "assertions": [
+            {
+              "type": "visible",
+              "element": "error message",
+              "expectedValue": "Another session is already active. Please log out from the other session."
+            }
+          ],
+          "testDataSets": {
+            "main": {
+              "email": "user@example.com",
+              "password": "ValidPass123!"
+            },
+            "expectedOutcome": {
+              "errorMessage": "Another session is already active. Please log out from the other session.",
+              "fieldHighlighted": null,
+              "submitBlocked": true
+            }
+          },
+          "recommendations": [
+            "session",
+            "concurrent-login"
+          ],
+          "_inspection": {
+            "url": "https://cirro.io/users/sign_in",
+            "timestamp": 1776086374521,
+            "realInspection": false
+          },
+          "_journeySteps": 4,
+          "_scenarioOriginal": {
+            "scenarioId": "NEG-011",
+            "title": "Login fails with concurrent user conflict",
+            "description": "User attempts to log in while another session is active with the same credentials",
+            "type": "negative",
+            "priority": "high",
+            "category": "session",
+            "steps": [
+              {
+                "stepNumber": 1,
+                "action": "navigate",
+                "url": "https://example.com/login"
+              },
+              {
+                "stepNumber": 2,
+                "action": "fill",
+                "field": "user[email]",
+                "value": "user@example.com",
+                "locatorStrategy": "getByLabel"
+              },
+              {
+                "stepNumber": 3,
+                "action": "fill",
+                "field": "user[password]",
+                "value": "ValidPass123!",
+                "locatorStrategy": "getByLabel"
+              },
+              {
+                "stepNumber": 4,
+                "action": "click",
+                "element": "Login button",
+                "locatorStrategy": "getByRole"
+              }
+            ],
+            "expectedOutcome": {
+              "errorMessage": "Another session is already active. Please log out from the other session.",
+              "fieldHighlighted": null,
+              "submitBlocked": true
+            },
+            "testData": {
+              "email": "user@example.com",
+              "password": "ValidPass123!"
+            },
+            "tags": [
+              "session",
+              "concurrent-login"
+            ],
+            "securityRelevance": "medium"
+          }
+        }
+      ]
+    },
+    "totalPlans": 16,
+    "summary": "Formatted 16 test plans from recorded scenarios",
+    "createdAt": "2026-04-13T13:19:34.521Z"
+  }
+}

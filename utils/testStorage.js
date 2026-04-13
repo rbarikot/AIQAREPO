@@ -363,7 +363,7 @@ class TestStorage {
     const tags = new Set();
     
     // Add feature-based tags
-    const featureLower = feature.toLowerCase();
+    const featureLower = (feature || '').toLowerCase();
     if (featureLower.includes('login')) tags.add('login');
     if (featureLower.includes('signup') || featureLower.includes('register')) tags.add('signup');
     if (featureLower.includes('form')) tags.add('form');
@@ -371,7 +371,7 @@ class TestStorage {
     if (featureLower.includes('checkout')) tags.add('checkout');
     
     // Add action-based tags
-    const allActions = userActions.join(' ').toLowerCase();
+    const allActions = (Array.isArray(userActions) ? userActions : []).join(' ').toLowerCase();
     if (allActions.includes('click')) tags.add('click');
     if (allActions.includes('enter') || allActions.includes('fill')) tags.add('input');
     if (allActions.includes('select')) tags.add('select');
@@ -386,7 +386,7 @@ class TestStorage {
     let count = 0;
     const pageObject = files.find(f => f.type === 'page-object');
     
-    if (pageObject) {
+    if (pageObject && pageObject.content) {
       const locatorPatterns = [
         /getByRole\(/g,
         /getByLabel\(/g,
@@ -410,7 +410,7 @@ class TestStorage {
   countTests(files) {
     const testSpec = files.find(f => f.type === 'test-spec');
     
-    if (testSpec) {
+    if (testSpec && testSpec.content) {
       const matches = testSpec.content.match(/test\(/g);
       return matches ? matches.length : 0;
     }
